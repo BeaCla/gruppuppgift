@@ -20,6 +20,7 @@ public class Main extends Application {
 		}
 		
 		System.out.println("Hej!");
+		System.out.println("hej");
 	}
 	
 	public static void main(String[] args) {
