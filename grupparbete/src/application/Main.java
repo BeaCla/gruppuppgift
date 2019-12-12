@@ -11,7 +11,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,400,600);
+			Scene scene = new Scene(root,401,600);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -22,6 +22,5 @@ public class Main extends Application {
 	
 	public static void main(String[] args) {
 		launch(args);
-		
 	}
 }
