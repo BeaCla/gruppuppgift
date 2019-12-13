@@ -10,9 +10,10 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			BorderPane root = new BorderPane();
-			Scene scene = new Scene(root,401,600);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			SkiComp root = new SkiComp();
+			//BorderPane root = new BorderPane();
+			Scene scene = new Scene(root,700,500);
+			scene.getStylesheets().add(getClass().getResource("resources/application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {
