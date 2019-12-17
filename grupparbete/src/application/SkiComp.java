@@ -1,6 +1,8 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import application.model.Competitor;
 import application.utils.XmlFileUtils;
@@ -99,6 +101,7 @@ public class SkiComp extends VBox {
 		Clockline.getChildren().addAll(hBoxClock, clockButtons, left, ComButton);
 
 		/////////////////////////////////////
+		List<Competitor> competitorsList = new ArrayList<Competitor>();
 		ObservableList<Competitor> observableList = FXCollections.observableArrayList();
 		tableView = new TableView<Competitor>(observableList);
 
@@ -111,9 +114,9 @@ public class SkiComp extends VBox {
 		TableColumn<Competitor, String> col4 = new TableColumn<Competitor, String>("Club");
 		col4.setCellValueFactory(new PropertyValueFactory<Competitor, String>("club"));
 		TableColumn<Competitor, String> col5 = new TableColumn<Competitor, String>("Start time");
-		col5.setCellValueFactory(new PropertyValueFactory<Competitor, String>("startTime"));
+		col5.setCellValueFactory(new PropertyValueFactory<Competitor, String>("displayStartTime"));
 		TableColumn<Competitor, String> col6 = new TableColumn<Competitor, String>("Middle Time");
-		col6.setCellValueFactory(new PropertyValueFactory<Competitor, String>("middleTime"));
+		col6.setCellValueFactory(new PropertyValueFactory<Competitor, String>("displayMiddleTime"));
 		TableColumn<Competitor, String> col7 = new TableColumn<Competitor, String>("Finish");
 		col7.setCellValueFactory(new PropertyValueFactory<Competitor, String>("finishTime"));
 		TableColumn<Competitor, String> col8 = new TableColumn<Competitor, String>("Result");
@@ -143,7 +146,7 @@ public class SkiComp extends VBox {
 		addButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				observableList.add(new Competitor(textFieldName.getText(), textFieldLast.getText(),
-						textFieldNumber.getText(), textFieldClub.getText(), null, null, null, null));
+						String.valueOf(observableList.size() + 1), textFieldClub.getText(), null, null, null, null));
 				textFieldName.clear();
 				textFieldLast.clear();
 				textFieldNumber.clear();
@@ -190,6 +193,17 @@ public class SkiComp extends VBox {
 				textFieldNumber.clear();
 				textFieldClub.clear();
 			}
+		});
+		
+		massStart.setOnAction(e ->{
+			competitorsList.clear();
+			for (Competitor competitor : observableList) {
+				competitorsList.add(competitor);
+				competitor.setStartTime(System.currentTimeMillis());
+				competitor.setDisplayStartTime();
+			}
+			observableList.clear();
+			observableList.addAll(competitorsList);
 		});
 
 		HBox buttonLine = new HBox();

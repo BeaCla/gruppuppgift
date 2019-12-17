@@ -1,6 +1,8 @@
 package application.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Competitor implements Serializable {
 	
@@ -9,15 +11,17 @@ public class Competitor implements Serializable {
 	private String number = null;
 	private String club = "";
 	private Long startTime = null;
+	private String displayStartTime = null;
+	private String displayMiddleTime = null;
 	private Long middleTime = null;
-	private Long finishTime = null;
+	private String finishTime = null;
 	private Integer result = null;
 	
 	public Competitor() {
 		
 	}
 	
-	public Competitor (String firstName, String lastName, String number, String club, Long startTime, Long middleTime, Long finishTime, Integer result) {
+	public Competitor (String firstName, String lastName, String number, String club, Long startTime, Long middleTime, String finishTime, Integer result) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.number = number;
@@ -78,11 +82,11 @@ public class Competitor implements Serializable {
 		this.middleTime = middleTime;
 	}
 	
-	public Long getFinishTime() {
+	public String getFinishTime() {
 		return finishTime;
 	}
 	
-	public void setFinishTime(Long finishTime) {
+	public void setFinishTime(String finishTime) {
 		this.finishTime = finishTime;
 	}
 	
@@ -92,6 +96,22 @@ public class Competitor implements Serializable {
 	
 	public void setResult(Integer result) {
 		this.result = result;
+	}
+	
+	public void setDisplayStartTime() {
+		this.displayStartTime = (new SimpleDateFormat("hh:mm:ss")).format(new Date(startTime));
+	}
+	
+	public String getDisplayStartTime() {
+		return displayStartTime;
+	}
+	
+	public void setDisplayMiddleTime() {
+		this.displayMiddleTime = (new SimpleDateFormat("hh:mm:ss")).format(new Date(middleTime));
+	}
+	
+	public String getDisplayMiddleTime() {
+		return displayMiddleTime;
 	}
 	
 }
