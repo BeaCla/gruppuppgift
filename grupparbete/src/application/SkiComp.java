@@ -22,6 +22,7 @@ import javafx.scene.text.Text;
 
 public class SkiComp extends VBox {
 	
+	private TableView<Competitor> tableView = null;
 	
 	public SkiComp() {
 		Label labelName = new Label("First name\t");
@@ -100,7 +101,7 @@ public class SkiComp extends VBox {
 		
 		/////////////////////////////////////
 		ObservableList<Competitor> observableList = FXCollections.observableArrayList();
-		TableView<Competitor> tableView = new TableView<Competitor>(observableList);
+		tableView = new TableView<Competitor>(observableList);
 		
 		TableColumn<Competitor, String> col1 = new TableColumn<Competitor, String>("Number");
 		col1.setCellValueFactory(new PropertyValueFactory<Competitor, String>("number"));
