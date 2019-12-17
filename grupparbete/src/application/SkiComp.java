@@ -113,11 +113,11 @@ public class SkiComp extends VBox {
 		TableColumn<Competitor, String> col5 = new TableColumn<Competitor, String>("Start time");
 		col5.setCellValueFactory(new PropertyValueFactory<Competitor, String>("startTime"));
 		TableColumn<Competitor, String> col6 = new TableColumn<Competitor, String>("Middle Time");
-		col5.setCellValueFactory(new PropertyValueFactory<Competitor, String>("middleTime"));
+		col6.setCellValueFactory(new PropertyValueFactory<Competitor, String>("middleTime"));
 		TableColumn<Competitor, String> col7 = new TableColumn<Competitor, String>("Finish");
-		col5.setCellValueFactory(new PropertyValueFactory<Competitor, String>("finishTime"));
+		col7.setCellValueFactory(new PropertyValueFactory<Competitor, String>("finishTime"));
 		TableColumn<Competitor, String> col8 = new TableColumn<Competitor, String>("Result");
-		col6.setCellValueFactory(new PropertyValueFactory<Competitor, String>("result"));
+		col8.setCellValueFactory(new PropertyValueFactory<Competitor, String>("result"));
 
 		tableView.getColumns().addAll(col1, col2, col3, col4, col5, col6, col7, col8);
 
