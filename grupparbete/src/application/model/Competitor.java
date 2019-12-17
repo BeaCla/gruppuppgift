@@ -8,16 +8,16 @@ public class Competitor implements Serializable {
 	private String lastName = "";
 	private String number = null;
 	private String club = "";
-	private Integer startTime = null;
-	private Integer middleTime = null;
-	private Integer finishTime = null;
+	private Long startTime = null;
+	private Long middleTime = null;
+	private Long finishTime = null;
 	private Integer result = null;
 	
 	public Competitor() {
 		
 	}
 	
-	public Competitor (String firstName, String lastName, String number, String club, Integer startTime, Integer middleTime, Integer finishTime, Integer result) {
+	public Competitor (String firstName, String lastName, String number, String club, Long startTime, Long middleTime, Long finishTime, Integer result) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.number = number;
@@ -62,27 +62,27 @@ public class Competitor implements Serializable {
 		this.club = club;
 	}
 	
-	public Integer getStartTime() {
+	public Long getStartTime() {
 		return startTime;
 	}
 	
-	public void setStartTime (Integer startTime) {
+	public void setStartTime (Long startTime) {
 		this.startTime = startTime;
 	}
 	
-	public Integer getMiddleTime() {
+	public Long getMiddleTime() {
 		return middleTime;
 	}
 	
-	public void setMiddleTime(Integer middleTime) {
+	public void setMiddleTime(Long middleTime) {
 		this.middleTime = middleTime;
 	}
 	
-	public Integer getFinishTime() {
+	public Long getFinishTime() {
 		return finishTime;
 	}
 	
-	public void setFinishTime(Integer finishTime) {
+	public void setFinishTime(Long finishTime) {
 		this.finishTime = finishTime;
 	}
 	
