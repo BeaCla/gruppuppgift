@@ -95,25 +95,29 @@ public class SkiComp extends VBox {
 		
 		Clockline.getChildren().addAll(hBoxClock, clockButtons,left , ComButton);
 		
+//		TableColumn<T, String> firstName = new TableColumn<T, String>("First name");
+//		firstName.setCellValueFactory(new PropertyValueFactory<T, String>("name"
+		
 		/////////////////////////////////////
 		ObservableList<Competitor> observableList = FXCollections.observableArrayList();
 		TableView<Competitor> tableView = new TableView<Competitor>(observableList);
-		TableColumn col1 = new TableColumn<>("Number");
-		col1.setCellValueFactory(new PropertyValueFactory<>("number"));
-		TableColumn col2 = new TableColumn<>("Last Name");
-		col2.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-		TableColumn col3 = new TableColumn<>("First Name");
-		col3.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-		TableColumn col4 = new TableColumn<>("Club");
-		col4.setCellValueFactory(new PropertyValueFactory<>("club"));
-		TableColumn col5 = new TableColumn<>("Start time");
-		col5.setCellValueFactory(new PropertyValueFactory<>("startTime"));
-		TableColumn col6 = new TableColumn<>("Middle Time");
-		col5.setCellValueFactory(new PropertyValueFactory<>("middleTime"));
-		TableColumn col7 = new TableColumn<>("Finish");
-		col5.setCellValueFactory(new PropertyValueFactory<>("finishTime"));
-		TableColumn col8 = new TableColumn<>("Result");
-		col6.setCellValueFactory(new PropertyValueFactory<>("result"));
+		
+		TableColumn<Competitor, String> col1 = new TableColumn<Competitor, String>("Number");
+		col1.setCellValueFactory(new PropertyValueFactory<Competitor, String>("number"));
+		TableColumn<Competitor, String> col2 = new TableColumn<>("Last Name");
+		col2.setCellValueFactory(new PropertyValueFactory<Competitor, String>("lastName"));
+		TableColumn<Competitor, String> col3 = new TableColumn<Competitor, String>("First Name");
+		col3.setCellValueFactory(new PropertyValueFactory<Competitor, String>("firstName"));
+		TableColumn<Competitor, String> col4 = new TableColumn<Competitor, String>("Club");
+		col4.setCellValueFactory(new PropertyValueFactory<Competitor, String>("club"));
+		TableColumn<Competitor, String> col5 = new TableColumn<Competitor, String>("Start time");
+		col5.setCellValueFactory(new PropertyValueFactory<Competitor, String>("startTime"));
+		TableColumn<Competitor, String> col6 = new TableColumn<Competitor, String>("Middle Time");
+		col5.setCellValueFactory(new PropertyValueFactory<Competitor, String>("middleTime"));
+		TableColumn<Competitor, String> col7 = new TableColumn<Competitor, String>("Finish");
+		col5.setCellValueFactory(new PropertyValueFactory<Competitor, String>("finishTime"));
+		TableColumn<Competitor, String> col8 = new TableColumn<Competitor, String>("Result");
+		col6.setCellValueFactory(new PropertyValueFactory<Competitor, String>("result"));
 
 		
 		
