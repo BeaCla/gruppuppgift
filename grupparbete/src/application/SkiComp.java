@@ -130,14 +130,14 @@ public class SkiComp extends VBox {
 
 		Competitor[] c = XmlFileUtils.readXMLDecoder(FILE_NAME);
 		tableView.getItems().addAll(Arrays.asList(c));
-		
+
 		tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			public void handle(MouseEvent event) {
 				if (tableView.getSelectionModel().getSelectedIndex() != -1) {
 					Competitor comp = tableView.getSelectionModel().getSelectedItem();
 					textFieldName.setText(comp.getFirstName());
 					textFieldLast.setText(comp.getLastName());
-					textFieldNumber.setText(comp.getNumber());
+					textFieldNumber.setText(String.valueOf(comp.getNumber()));
 					textFieldClub.setText(comp.getClub());
 				}
 			}
@@ -149,8 +149,32 @@ public class SkiComp extends VBox {
 		Button addButton = new Button("Add");
 		addButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				observableList.add(new Competitor(textFieldName.getText(), textFieldLast.getText(),
-						String.valueOf(observableList.size() + 1), textFieldClub.getText()));
+
+				/**
+				 * Hittar högsta värdet på en åkares nummer
+				 */
+				int biggestNumber = 0;
+				for (int i = 0; i < observableList.size(); i++) {
+					if (Integer.valueOf(observableList.get(i).getNumber()) > biggestNumber) {
+						biggestNumber = Integer.valueOf(observableList.get(i).getNumber());
+
+					}
+				}
+				/**
+				 * Här hittar vi nästa lägsta lediga nummer
+				 */
+
+				int nextFreeNumber = 1;
+				for (Competitor compeg : observableList) {
+					for (int i = 0; i < observableList.size(); i++) {
+						if (Integer.valueOf(observableList.get(i).getNumber()) == nextFreeNumber) {
+							nextFreeNumber = Integer.valueOf(observableList.get(i).getNumber()) + 1;
+
+						}
+					}
+				}
+
+				observableList.add(new Competitor(textFieldName.getText(), textFieldLast.getText(), nextFreeNumber, textFieldClub.getText()));
 				textFieldName.clear();
 				textFieldLast.clear();
 				textFieldNumber.clear();
@@ -164,9 +188,10 @@ public class SkiComp extends VBox {
 
 				if (tableView.getSelectionModel().getSelectedIndex() != -1) {
 					observableList.set(tableView.getSelectionModel().getSelectedIndex(),
-							new Competitor(textFieldName.getText(), textFieldLast.getText(), textFieldNumber.getText(),
+							new Competitor(textFieldName.getText(), textFieldLast.getText(), Integer.valueOf(textFieldNumber.getText()), 
 									textFieldClub.getText(), observableList.get(competitorIndex).getDisplayStartTime(),
-									observableList.get(competitorIndex).getDisplayMiddleTime(),observableList.get(competitorIndex).getFinishTime(),
+									observableList.get(competitorIndex).getDisplayMiddleTime(),
+									observableList.get(competitorIndex).getFinishTime(),
 									observableList.get(competitorIndex).getResult()));
 					textFieldName.clear();
 					textFieldLast.clear();
@@ -188,7 +213,7 @@ public class SkiComp extends VBox {
 					textFieldNumber.clear();
 					textFieldClub.clear();
 				}
-				
+
 			}
 		});
 
@@ -202,16 +227,14 @@ public class SkiComp extends VBox {
 				textFieldClub.clear();
 			}
 		});
-		
-		
-		
+
 		/**
-		 * Actionevent för masstart
-		 * Tar den inmatade tiden "t.ex. 10:00:30" och konverterar den till millisekunder.
-		 * Millisekunderna sparas i varje accounts "startTime".
-		 * setDisplayStartTime() hämtar i sin tur informationen från startTime och visar den i rätt format i tableViewn.
+		 * Actionevent för masstart Tar den inmatade tiden "t.ex. 10:00:30" och
+		 * konverterar den till millisekunder. Millisekunderna sparas i varje accounts
+		 * "startTime". setDisplayStartTime() hämtar i sin tur informationen från
+		 * startTime och visar den i rätt format i tableViewn.
 		 */
-		massStart.setOnAction(e ->{
+		massStart.setOnAction(e -> {
 			String massStartTime = "10:30:00";
 			SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
 			Date date = null;
@@ -222,7 +245,7 @@ public class SkiComp extends VBox {
 				e1.printStackTrace();
 			}
 			long timeStamp = date.getTime();
-			
+
 			competitorsList.clear();
 			for (Competitor competitor : observableList) {
 				competitorsList.add(competitor);
