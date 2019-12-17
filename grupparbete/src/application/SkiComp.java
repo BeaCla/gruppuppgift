@@ -1,7 +1,11 @@
 package application;
 
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import application.model.Competitor;
@@ -161,7 +165,9 @@ public class SkiComp extends VBox {
 				if (tableView.getSelectionModel().getSelectedIndex() != -1) {
 					observableList.set(tableView.getSelectionModel().getSelectedIndex(),
 							new Competitor(textFieldName.getText(), textFieldLast.getText(), textFieldNumber.getText(),
-									textFieldClub.getText(), observableList.get(competitorIndex).getDisplayStartTime()));
+									textFieldClub.getText(), observableList.get(competitorIndex).getDisplayStartTime(),
+									observableList.get(competitorIndex).getDisplayMiddleTime(),observableList.get(competitorIndex).getFinishTime(),
+									observableList.get(competitorIndex).getResult()));
 					textFieldName.clear();
 					textFieldLast.clear();
 					textFieldNumber.clear();
@@ -197,11 +203,30 @@ public class SkiComp extends VBox {
 			}
 		});
 		
+		
+		
+		/**
+		 * Actionevent för masstart
+		 * Tar den inmatade tiden "t.ex. 10:00:30" och konverterar den till millisekunder.
+		 * Millisekunderna sparas i varje accounts "startTime".
+		 * setDisplayStartTime() hämtar i sin tur informationen från startTime och visar den i rätt format i tableViewn.
+		 */
 		massStart.setOnAction(e ->{
+			String massStartTime = "10:30:00";
+			SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+			Date date = null;
+			try {
+				date = timeFormatter.parse(massStartTime);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			long timeStamp = date.getTime();
+			
 			competitorsList.clear();
 			for (Competitor competitor : observableList) {
 				competitorsList.add(competitor);
-				competitor.setStartTime(System.currentTimeMillis());
+				competitor.setStartTime(timeStamp);
 				competitor.setDisplayStartTime();
 			}
 			observableList.clear();
