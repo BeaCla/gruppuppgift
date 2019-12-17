@@ -146,7 +146,7 @@ public class SkiComp extends VBox {
 		addButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				observableList.add(new Competitor(textFieldName.getText(), textFieldLast.getText(),
-						String.valueOf(observableList.size() + 1), textFieldClub.getText(), null, null, null, null));
+						String.valueOf(observableList.size() + 1), textFieldClub.getText()));
 				textFieldName.clear();
 				textFieldLast.clear();
 				textFieldNumber.clear();
@@ -156,11 +156,12 @@ public class SkiComp extends VBox {
 		Button updateButton = new Button("Update");
 		updateButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
+				int competitorIndex = tableView.getSelectionModel().getSelectedIndex();
 
 				if (tableView.getSelectionModel().getSelectedIndex() != -1) {
 					observableList.set(tableView.getSelectionModel().getSelectedIndex(),
 							new Competitor(textFieldName.getText(), textFieldLast.getText(), textFieldNumber.getText(),
-									textFieldClub.getText(), null, null, null, null));
+									textFieldClub.getText(), observableList.get(competitorIndex).getDisplayStartTime()));
 					textFieldName.clear();
 					textFieldLast.clear();
 					textFieldNumber.clear();
@@ -181,6 +182,7 @@ public class SkiComp extends VBox {
 					textFieldNumber.clear();
 					textFieldClub.clear();
 				}
+				
 			}
 		});
 

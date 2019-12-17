@@ -21,15 +21,20 @@ public class Competitor implements Serializable {
 		
 	}
 	
-	public Competitor (String firstName, String lastName, String number, String club, Long startTime, Long middleTime, String finishTime, Integer result) {
+	public Competitor (String firstName, String lastName, String number, String club) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.number = number;
 		this.club = club;
-		this.startTime = startTime;
-		this.middleTime = middleTime;
-		this.finishTime = finishTime;
-		this.result = result;
+		
+	}
+	
+	public Competitor (String firstName, String lastName, String number, String club, String displayStartTime) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.number = number;
+		this.club = club;
+		this.displayStartTime = displayStartTime;
 		
 	}
 	
