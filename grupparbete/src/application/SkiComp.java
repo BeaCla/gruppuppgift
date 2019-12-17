@@ -51,7 +51,7 @@ public class SkiComp extends VBox {
 		hboxClub.getChildren().addAll(labelClub,textFieldClub);
 		
 		VBox addCompetitorLine = new VBox();
-		addCompetitorLine.getChildren().addAll(hboxNumber,hboxLast,hboxName,hboxClub);
+		addCompetitorLine.getChildren().addAll(hboxLast,hboxName,hboxClub);
 		addCompetitorLine.setSpacing(5.0);
 		addCompetitorLine.getStyleClass().add("competitor");
 		addCompetitorLine.setPadding(new Insets(10, 10, 10, 10));
