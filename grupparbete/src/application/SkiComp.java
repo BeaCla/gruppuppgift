@@ -127,6 +127,8 @@ public class SkiComp extends VBox {
 		col8.setCellValueFactory(new PropertyValueFactory<Competitor, String>("result"));
 
 		tableView.getColumns().addAll(col1, col2, col3, col4, col5, col6, col7, col8);
+		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		
 
 		Competitor[] c = XmlFileUtils.readXMLDecoder(FILE_NAME);
 		tableView.getItems().addAll(Arrays.asList(c));
