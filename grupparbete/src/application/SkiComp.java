@@ -129,6 +129,15 @@ public class SkiComp extends VBox {
 		tableView.getColumns().addAll(col1, col2, col3, col4, col5, col6, col7, col8);
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		
+		col1.setMaxWidth(75); col1.setMinWidth(75);
+		col2.setMinWidth(100);
+		col3.setMinWidth(100);
+		col4.setMinWidth(50); col4.setMaxWidth(50);
+		col5.setMinWidth(100); col5.setMaxWidth(100);
+		col6.setMinWidth(100); col6.setMaxWidth(100);
+		col7.setMinWidth(100); col7.setMaxWidth(100);
+		col8.setMaxWidth(75); col8.setMinWidth(75);
+		
 
 		Competitor[] c = XmlFileUtils.readXMLDecoder(FILE_NAME);
 		tableView.getItems().addAll(Arrays.asList(c));
