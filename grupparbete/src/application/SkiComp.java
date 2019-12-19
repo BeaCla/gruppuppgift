@@ -91,7 +91,7 @@ public class SkiComp extends VBox {
 		Button massStart = new Button("Mass start");
 		Button indi = new Button("Intervall start");
 		Button hunt = new Button("Jaktstart");
-		Button result = new Button("Resultat");
+		//Button result = new Button("Resultat");
 
 		Region left = new Region();
 		HBox.setHgrow(left, Priority.ALWAYS);
@@ -99,7 +99,7 @@ public class SkiComp extends VBox {
 		HBox ComButton = new HBox();
 		ComButton.setSpacing(30.0);
 		ComButton.setPadding(new Insets(0, 30, 0, 0));
-		ComButton.getChildren().addAll(massStart, indi, hunt, result);
+		ComButton.getChildren().addAll(massStart, indi, hunt);
 		ComButton.setAlignment(Pos.CENTER);
 
 		Clockline.getChildren().addAll(hBoxClock, clockButtons, left, ComButton);
