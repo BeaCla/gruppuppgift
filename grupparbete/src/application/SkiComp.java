@@ -22,6 +22,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -128,7 +129,7 @@ public class SkiComp extends VBox {
 
 		tableView.getColumns().addAll(col1, col2, col3, col4, col5, col6, col7, col8);
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		
+
 		col1.setMaxWidth(75); col1.setMinWidth(75);
 		col2.setMinWidth(100);
 		col3.setMinWidth(100);
@@ -137,26 +138,34 @@ public class SkiComp extends VBox {
 		col6.setMinWidth(100); col6.setMaxWidth(100);
 		col7.setMinWidth(100); col7.setMaxWidth(100);
 		col8.setMaxWidth(75); col8.setMinWidth(75);
-		
+
 
 		Competitor[] c = XmlFileUtils.readXMLDecoder(FILE_NAME);
 		tableView.getItems().addAll(Arrays.asList(c));
 
-		tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-			public void handle(MouseEvent event) {
-				if (tableView.getSelectionModel().getSelectedIndex() != -1) {
-					Competitor comp = tableView.getSelectionModel().getSelectedItem();
-					textFieldName.setText(comp.getFirstName());
-					textFieldLast.setText(comp.getLastName());
-					textFieldNumber.setText(String.valueOf(comp.getNumber()));
-					textFieldClub.setText(comp.getClub());
+		tableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+
+				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+					if (mouseEvent.getClickCount() == 2) {
+						if (tableView.getSelectionModel().getSelectedIndex() != -1) {
+							Competitor comp = tableView.getSelectionModel().getSelectedItem();
+							textFieldName.setText(comp.getFirstName());
+							textFieldLast.setText(comp.getLastName());
+							textFieldNumber.setText(String.valueOf(comp.getNumber()));
+							textFieldClub.setText(comp.getClub());
+						}
+
+					}
 				}
 			}
 
-			;
+
 		});
 
-		//////////////////////////////////
+
 		Button addButton = new Button("Add");
 		addButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
