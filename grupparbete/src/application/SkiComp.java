@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -24,10 +25,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class SkiComp extends VBox {
 
@@ -91,7 +95,7 @@ public class SkiComp extends VBox {
 		Button massStart = new Button("Mass start");
 		Button indi = new Button("Intervall start");
 		Button hunt = new Button("Jaktstart");
-		Button result = new Button("Resultat");
+		//Button result = new Button("Resultat");
 
 		Region left = new Region();
 		HBox.setHgrow(left, Priority.ALWAYS);
@@ -99,7 +103,7 @@ public class SkiComp extends VBox {
 		HBox ComButton = new HBox();
 		ComButton.setSpacing(30.0);
 		ComButton.setPadding(new Insets(0, 30, 0, 0));
-		ComButton.getChildren().addAll(massStart, indi, hunt, result);
+		ComButton.getChildren().addAll(massStart, indi, hunt);
 		ComButton.setAlignment(Pos.CENTER);
 
 		Clockline.getChildren().addAll(hBoxClock, clockButtons, left, ComButton);
@@ -128,6 +132,15 @@ public class SkiComp extends VBox {
 
 		tableView.getColumns().addAll(col1, col2, col3, col4, col5, col6, col7, col8);
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		
+		col1.setMaxWidth(75); col1.setMinWidth(75);
+		col2.setMinWidth(100);
+		col3.setMinWidth(100);
+		col4.setMinWidth(50); col4.setMaxWidth(50);
+		col5.setMinWidth(100); col5.setMaxWidth(100);
+		col6.setMinWidth(100); col6.setMaxWidth(100);
+		col7.setMinWidth(100); col7.setMaxWidth(100);
+		col8.setMaxWidth(75); col8.setMinWidth(75);
 		
 
 		Competitor[] c = XmlFileUtils.readXMLDecoder(FILE_NAME);
@@ -237,6 +250,10 @@ public class SkiComp extends VBox {
 		 * startTime och visar den i rätt format i tableViewn.
 		 */
 		massStart.setOnAction(e -> {
+			StartTimeScreen startTimeScreen = new StartTimeScreen();
+			modal(startTimeScreen, "Masstart", 380, 200);
+			
+			
 			String massStartTime = "10:30:00";
 			SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
 			Date date = null;
@@ -280,4 +297,35 @@ public class SkiComp extends VBox {
 		return tableView.getItems();
 	}
 
+	/**
+	 * Method for creating a popup modal window for a given scene {@link Scene}
+	 * @param secondaryLayout {@link Pane} to show.
+	 * @param title {@link String} Title of the window.
+	 * @param width {@link double} width of the window.
+	 * @param height {@link double} height  of the window.
+	 */
+	protected void modal(Pane secondaryLayout, String title, double width, double height) {
+
+		Stage primaryStage = (Stage) this.getScene().getWindow();
+
+		Scene secondScene = new Scene(secondaryLayout, width, height);
+		secondScene.getStylesheets().add(getClass().getResource("resources/application.css").toExternalForm());
+
+		// New window (Stage)
+		Stage newWindow = new Stage();
+		newWindow.setTitle(title);
+		newWindow.setScene(secondScene);
+
+		// Specifies the modality for new window.
+		newWindow.initModality(Modality.WINDOW_MODAL);
+
+		// Specifies the owner Window (parent) for new window
+		newWindow.initOwner(primaryStage);
+
+		// Set position of second window, related to primary window.
+		newWindow.setX(primaryStage.getX() + 200);
+		newWindow.setY(primaryStage.getY() + 100);
+
+		newWindow.show();
+	}
 }

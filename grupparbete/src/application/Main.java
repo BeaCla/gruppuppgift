@@ -18,7 +18,7 @@ public class Main extends Application {
 		try {
 			this.primaryStage = primaryStage;
 			root = new SkiComp();
-			Scene scene = new Scene(root,700,500);
+			Scene scene = new Scene(root,800,500);
 			scene.getStylesheets().add(getClass().getResource("resources/application.css").toExternalForm());
 			primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("resources/cross-country-skiing.png")));
 			primaryStage.setScene(scene);
