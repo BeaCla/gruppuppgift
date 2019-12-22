@@ -1,6 +1,5 @@
 package application;
 
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +22,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -37,6 +37,7 @@ public class SkiComp extends VBox {
 
 	static final String FILE_NAME = "src\\application\\resources\\file.xml";
 	private TableView<Competitor> tableView = null;
+	Timer timer;
 
 	public SkiComp() {
 		Label labelName = new Label("First name\t");
@@ -70,27 +71,21 @@ public class SkiComp extends VBox {
 		addCompetitorLine.getStyleClass().add("competitor");
 		addCompetitorLine.setPadding(new Insets(10, 10, 10, 10));
 
-		////////////////////////////////////////////////
+		// Clock stuff
 		HBox Clockline = new HBox();
 
 		HBox hBoxClock = new HBox();
 		hBoxClock.setAlignment(Pos.CENTER);
 		hBoxClock.setPadding(new Insets(0, 0, 0, 10));
 
-		Text clock = new Text("00:00:00");
-		clock.getStyleClass().add("clock");
-		hBoxClock.getChildren().addAll(clock);
+		Text clockText = new Text("00:00:00");
 
-		// clock.setStyle("-fx-padding:10, 10, 10, 10"); funkar ej;
+		timer = new Timer(clockText);
 
-		VBox clockButtons = new VBox();
-		clockButtons.setSpacing(10.0);
-		Button start = new Button("Start");
-		Button stop = new Button("Stop");
-		Button mellan = new Button("Mellantid");
+		clockText.getStyleClass().add("clock");
+		hBoxClock.getChildren().addAll(clockText);
 
-		clockButtons.getChildren().addAll(start, mellan, stop);
-		clockButtons.setPadding(new Insets(10, 10, 10, 10));
+		// * End of clock stuff
 
 		Button massStart = new Button("Mass start");
 		Button indi = new Button("Intervall start");
@@ -105,8 +100,6 @@ public class SkiComp extends VBox {
 		ComButton.setPadding(new Insets(0, 30, 0, 0));
 		ComButton.getChildren().addAll(massStart, indi, hunt);
 		ComButton.setAlignment(Pos.CENTER);
-
-		Clockline.getChildren().addAll(hBoxClock, clockButtons, left, ComButton);
 
 		/////////////////////////////////////
 		List<Competitor> competitorsList = new ArrayList<Competitor>();
@@ -132,7 +125,7 @@ public class SkiComp extends VBox {
 
 		tableView.getColumns().addAll(col1, col2, col3, col4, col5, col6, col7, col8);
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		
+
 		col1.setMaxWidth(75); col1.setMinWidth(75);
 		col2.setMinWidth(100);
 		col3.setMinWidth(100);
@@ -141,26 +134,29 @@ public class SkiComp extends VBox {
 		col6.setMinWidth(100); col6.setMaxWidth(100);
 		col7.setMinWidth(100); col7.setMaxWidth(100);
 		col8.setMaxWidth(75); col8.setMinWidth(75);
-		
+
 
 		Competitor[] c = XmlFileUtils.readXMLDecoder(FILE_NAME);
 		tableView.getItems().addAll(Arrays.asList(c));
 
-		tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-			public void handle(MouseEvent event) {
-				if (tableView.getSelectionModel().getSelectedIndex() != -1) {
-					Competitor comp = tableView.getSelectionModel().getSelectedItem();
-					textFieldName.setText(comp.getFirstName());
-					textFieldLast.setText(comp.getLastName());
-					textFieldNumber.setText(String.valueOf(comp.getNumber()));
-					textFieldClub.setText(comp.getClub());
+		tableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+
+				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+					if (mouseEvent.getClickCount() == 2) {
+						if (tableView.getSelectionModel().getSelectedIndex() != -1) {
+							Competitor comp = tableView.getSelectionModel().getSelectedItem();
+							textFieldName.setText(comp.getFirstName());
+							textFieldLast.setText(comp.getLastName());
+							textFieldNumber.setText(String.valueOf(comp.getNumber()));
+							textFieldClub.setText(comp.getClub());
+						}
+					}
 				}
 			}
-
-			;
 		});
 
-		//////////////////////////////////
 		Button addButton = new Button("Add");
 		addButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
@@ -196,6 +192,7 @@ public class SkiComp extends VBox {
 				textFieldClub.clear();
 			}
 		});
+
 		Button updateButton = new Button("Update");
 		updateButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
@@ -208,6 +205,25 @@ public class SkiComp extends VBox {
 									observableList.get(competitorIndex).getDisplayMiddleTime(),
 									observableList.get(competitorIndex).getFinishTime(),
 									observableList.get(competitorIndex).getResult()));
+					textFieldName.clear();
+					textFieldLast.clear();
+					textFieldNumber.clear();
+					textFieldClub.clear();
+				}
+			}
+		});
+
+		updateButton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				int competitorIndex = tableView.getSelectionModel().getSelectedIndex();
+
+				if (tableView.getSelectionModel().getSelectedIndex() != -1) {
+					observableList.set(tableView.getSelectionModel().getSelectedIndex(),
+									new Competitor(textFieldName.getText(), textFieldLast.getText(), Integer.valueOf(textFieldNumber.getText()),
+													textFieldClub.getText(), observableList.get(competitorIndex).getDisplayStartTime(),
+													observableList.get(competitorIndex).getDisplayMiddleTime(),
+													observableList.get(competitorIndex).getFinishTime(),
+													observableList.get(competitorIndex).getResult()));
 					textFieldName.clear();
 					textFieldLast.clear();
 					textFieldNumber.clear();
@@ -242,6 +258,36 @@ public class SkiComp extends VBox {
 				textFieldClub.clear();
 			}
 		});
+
+
+		Button stopButton = new Button("Stop");
+		stopButton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				timer.stop();
+			}
+		});
+
+		Button startButton = new Button("Start");
+		startButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				timer.start();
+			}
+		});
+
+		Button mellanButton = new Button("Mellantid");
+		mellanButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				System.out.println(timer.getTime());
+			}
+		});
+
+		VBox clockButtons = new VBox();
+		clockButtons.setSpacing(10.0);
+		clockButtons.getChildren().addAll(startButton, mellanButton, stopButton);
+		clockButtons.setPadding(new Insets(10, 10, 10, 10));
+		Clockline.getChildren().addAll(hBoxClock, clockButtons, left, ComButton);
 
 		/**
 		 * Actionevent för masstart Tar den inmatade tiden "t.ex. 10:00:30" och
