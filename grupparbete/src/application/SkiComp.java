@@ -24,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -33,13 +34,21 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class SkiComp extends VBox {
+public class SkiComp extends AnchorPane {
 
 	static final String FILE_NAME = "src\\application\\resources\\file.xml";
 	private TableView<Competitor> tableView = null;
 	Timer timer;
 
 	public SkiComp() {
+		
+		VBox vbox = new VBox();
+		
+		AnchorPane.setTopAnchor(vbox, 5.0);
+		AnchorPane.setBottomAnchor(vbox, 5.0);
+		AnchorPane.setLeftAnchor(vbox, 5.0);
+		AnchorPane.setRightAnchor(vbox, 5.0);
+		
 		Label labelName = new Label("First name\t");
 		Label labelLast = new Label("Last name\t");
 		Label labelNumber = new Label("Number\t\t");
@@ -327,7 +336,8 @@ public class SkiComp extends VBox {
 		hboxName.getChildren().addAll(buttonLine);
 
 		///////////////////////////////////////
-		this.getChildren().addAll(addCompetitorLine, Clockline, tableView);
+		vbox.getChildren().addAll(addCompetitorLine, Clockline, tableView);
+		getChildren().addAll(vbox);
 
 	}
 
