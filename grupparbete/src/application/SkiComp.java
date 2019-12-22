@@ -297,8 +297,6 @@ public class SkiComp extends VBox {
 		 */
 		massStart.setOnAction(e -> {
 			StartTimeScreen startTimeScreen = new StartTimeScreen();
-			modal(startTimeScreen, "Masstart", 380, 200);
-			
 			
 			String massStartTime = "10:30:00";
 			SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
@@ -341,37 +339,5 @@ public class SkiComp extends VBox {
 	public ObservableList<Competitor> getCompetitorList() {
 
 		return tableView.getItems();
-	}
-
-	/**
-	 * Method for creating a popup modal window for a given scene {@link Scene}
-	 * @param secondaryLayout {@link Pane} to show.
-	 * @param title {@link String} Title of the window.
-	 * @param width {@link double} width of the window.
-	 * @param height {@link double} height  of the window.
-	 */
-	protected void modal(Pane secondaryLayout, String title, double width, double height) {
-
-		Stage primaryStage = (Stage) this.getScene().getWindow();
-
-		Scene secondScene = new Scene(secondaryLayout, width, height);
-		secondScene.getStylesheets().add(getClass().getResource("resources/application.css").toExternalForm());
-
-		// New window (Stage)
-		Stage newWindow = new Stage();
-		newWindow.setTitle(title);
-		newWindow.setScene(secondScene);
-
-		// Specifies the modality for new window.
-		newWindow.initModality(Modality.WINDOW_MODAL);
-
-		// Specifies the owner Window (parent) for new window
-		newWindow.initOwner(primaryStage);
-
-		// Set position of second window, related to primary window.
-		newWindow.setX(primaryStage.getX() + 200);
-		newWindow.setY(primaryStage.getY() + 100);
-
-		newWindow.show();
 	}
 }
