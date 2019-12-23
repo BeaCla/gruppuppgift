@@ -19,6 +19,11 @@ public class Main extends Application {
 			this.primaryStage = primaryStage;
 			root = new SkiComp();
 			Scene scene = new Scene(root,800,500);
+			
+			//preventing resizeing the application
+			primaryStage.setMinWidth(800);        
+			primaryStage.setMinHeight(585);
+			
 			scene.getStylesheets().add(getClass().getResource("resources/application.css").toExternalForm());
 			primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("resources/cross-country-skiing.png")));
 			primaryStage.setScene(scene);
