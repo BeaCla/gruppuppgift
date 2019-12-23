@@ -44,14 +44,14 @@ public class SkiComp extends AnchorPane {
 		
 		VBox vbox = new VBox();
 		
-		AnchorPane.setTopAnchor(vbox, 5.0);
+		AnchorPane.setTopAnchor(vbox, 2.0);
 		AnchorPane.setBottomAnchor(vbox, 5.0);
 		AnchorPane.setLeftAnchor(vbox, 5.0);
 		AnchorPane.setRightAnchor(vbox, 5.0);
 		
 		Label labelName = new Label("First name\t");
 		Label labelLast = new Label("Last name\t");
-		Label labelNumber = new Label("Number\t\t");
+//		Label labelNumber = new Label("Number\t\t");
 		Label labelClub = new Label("Club\t\t\t");
 		labelClub.getStyleClass().add("club");
 
@@ -68,8 +68,8 @@ public class SkiComp extends AnchorPane {
 		HBox hboxLast = new HBox();
 		hboxLast.getChildren().addAll(labelLast, textFieldLast);
 
-		HBox hboxNumber = new HBox();
-		hboxNumber.getChildren().addAll(labelNumber, textFieldNumber);
+//		HBox hboxNumber = new HBox();
+//		hboxNumber.getChildren().addAll(labelNumber, textFieldNumber);
 
 		HBox hboxClub = new HBox();
 		hboxClub.getChildren().addAll(labelClub, textFieldClub);
@@ -185,13 +185,13 @@ public class SkiComp extends AnchorPane {
 				 */
 
 				int nextFreeNumber = 1;
-				for (Competitor compeg : observableList) {
+//				for (Competitor compeg : observableList) {  //Koden används inte (troligtvis)
 					for (int i = 0; i < observableList.size(); i++) {
 						if (Integer.valueOf(observableList.get(i).getNumber()) == nextFreeNumber) {
 							nextFreeNumber = Integer.valueOf(observableList.get(i).getNumber()) + 1;
 
 						}
-					}
+//					}
 				}
 
 				observableList.add(new Competitor(textFieldName.getText(), textFieldLast.getText(), nextFreeNumber, textFieldClub.getText()));
@@ -305,7 +305,6 @@ public class SkiComp extends AnchorPane {
 		 * startTime och visar den i rätt format i tableViewn.
 		 */
 		massStart.setOnAction(e -> {
-			StartTimeScreen startTimeScreen = new StartTimeScreen();
 			
 			String massStartTime = "10:30:00";
 			SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
@@ -327,18 +326,30 @@ public class SkiComp extends AnchorPane {
 			observableList.clear();
 			observableList.addAll(competitorsList);
 		});
-
+		
+		Region leftAddButtonLine = new Region();
+		HBox.setHgrow(leftAddButtonLine, Priority.ALWAYS);
+		
 		HBox buttonLine = new HBox();
-		buttonLine.getChildren().addAll(addButton, updateButton, deleteButton, deleteAllButton);
+		buttonLine.getChildren().addAll(leftAddButtonLine, addButton, updateButton, deleteButton, deleteAllButton);
 		buttonLine.setSpacing(50.0);
-		buttonLine.setPadding(new Insets(0, 0, 0, 50));
+		buttonLine.setPadding(new Insets(0, 30, 0, 0));
 
-		hboxName.getChildren().addAll(buttonLine);
-
+		VBox colLeft = new VBox();
+		VBox colRight = new VBox();
+		HBox addCompetitorframe = new HBox();
+		
+		colLeft.getChildren().addAll(addCompetitorLine);
+		colRight.getChildren().addAll(buttonLine);
+	
+		colRight.setAlignment(Pos.CENTER);
+		HBox.setHgrow(colRight, Priority.ALWAYS);
+		addCompetitorframe.getStyleClass().add("competitor");
+		addCompetitorframe.getChildren().addAll(colLeft,colRight);
+	
 		///////////////////////////////////////
-		vbox.getChildren().addAll(addCompetitorLine, Clockline, tableView);
+		vbox.getChildren().addAll(addCompetitorframe , Clockline, tableView);
 		getChildren().addAll(vbox);
-
 	}
 
 	/**
