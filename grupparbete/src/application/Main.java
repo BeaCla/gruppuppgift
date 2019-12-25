@@ -2,6 +2,7 @@ package application;
 	
 import application.utils.XmlFileUtils;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -20,7 +21,7 @@ public class Main extends Application {
 			root = new SkiComp();
 			Scene scene = new Scene(root,800,500);
 			
-			//preventing resizeing the application
+			//preventing resizeing the application 
 			primaryStage.setMinWidth(810);        
 			primaryStage.setMinHeight(535);
 			
@@ -35,6 +36,7 @@ public class Main extends Application {
 	
 	@Override
 	public void stop() throws Exception {
+//		root.save();
 		XmlFileUtils.writeXMLEncoder(root.getCompetitorList(), FILE_NAME);
 		super.stop();
 	}

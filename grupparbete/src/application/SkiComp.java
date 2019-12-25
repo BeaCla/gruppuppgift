@@ -1,5 +1,6 @@
 package application;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,61 +16,55 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 public class SkiComp extends AnchorPane {
 
 	static final String FILE_NAME = "src\\application\\resources\\file.xml";
-	private TableView<Competitor> tableView = null;
+	private SkiTableView tableView = null;
+	List<Competitor> competitorsList = null;
+
+	TextField textFieldName = null;
+	TextField textFieldLast = null;
+	TextField textFieldNumber = null;
+	TextField textFieldClub = null;
+
 	Timer timer;
 
 	public SkiComp() {
-		
+
 		VBox vbox = new VBox();
-		
+
 		AnchorPane.setTopAnchor(vbox, 2.0);
 		AnchorPane.setBottomAnchor(vbox, 5.0);
 		AnchorPane.setLeftAnchor(vbox, 5.0);
 		AnchorPane.setRightAnchor(vbox, 5.0);
-		
+
 		Label labelName = new Label("First name\t");
 		Label labelLast = new Label("Last name\t");
-//		Label labelNumber = new Label("Number\t\t");
 		Label labelClub = new Label("Club\t\t\t");
 		labelClub.getStyleClass().add("club");
 
-		// this.setPadding(new Insets(10, 10, 10, 10));
-
-		TextField textFieldName = new TextField();
-		TextField textFieldLast = new TextField();
-		TextField textFieldNumber = new TextField();
-		TextField textFieldClub = new TextField();
+		textFieldName = new TextField();
+		textFieldLast = new TextField();
+		textFieldNumber = new TextField();
+		textFieldClub = new TextField();
 
 		HBox hboxName = new HBox();
 		hboxName.getChildren().addAll(labelName, textFieldName);
 
 		HBox hboxLast = new HBox();
 		hboxLast.getChildren().addAll(labelLast, textFieldLast);
-
-//		HBox hboxNumber = new HBox();
-//		hboxNumber.getChildren().addAll(labelNumber, textFieldNumber);
 
 		HBox hboxClub = new HBox();
 		hboxClub.getChildren().addAll(labelClub, textFieldClub);
@@ -99,7 +94,7 @@ public class SkiComp extends AnchorPane {
 		Button massStart = new Button("Mass start");
 		Button indi = new Button("Intervall start");
 		Button hunt = new Button("Jaktstart");
-		//Button result = new Button("Resultat");
+		// Button result = new Button("Resultat");
 
 		Region left = new Region();
 		HBox.setHgrow(left, Priority.ALWAYS);
@@ -111,39 +106,9 @@ public class SkiComp extends AnchorPane {
 		ComButton.setAlignment(Pos.CENTER);
 
 		/////////////////////////////////////
-		List<Competitor> competitorsList = new ArrayList<Competitor>();
+		competitorsList = new ArrayList<Competitor>();
 		ObservableList<Competitor> observableList = FXCollections.observableArrayList();
-		tableView = new TableView<Competitor>(observableList);
-
-		TableColumn<Competitor, String> col1 = new TableColumn<Competitor, String>("Number");
-		col1.setCellValueFactory(new PropertyValueFactory<Competitor, String>("number"));
-		TableColumn<Competitor, String> col2 = new TableColumn<>("Last Name");
-		col2.setCellValueFactory(new PropertyValueFactory<Competitor, String>("lastName"));
-		TableColumn<Competitor, String> col3 = new TableColumn<Competitor, String>("First Name");
-		col3.setCellValueFactory(new PropertyValueFactory<Competitor, String>("firstName"));
-		TableColumn<Competitor, String> col4 = new TableColumn<Competitor, String>("Club");
-		col4.setCellValueFactory(new PropertyValueFactory<Competitor, String>("club"));
-		TableColumn<Competitor, String> col5 = new TableColumn<Competitor, String>("Start time");
-		col5.setCellValueFactory(new PropertyValueFactory<Competitor, String>("displayStartTime"));
-		TableColumn<Competitor, String> col6 = new TableColumn<Competitor, String>("Middle Time");
-		col6.setCellValueFactory(new PropertyValueFactory<Competitor, String>("displayMiddleTime"));
-		TableColumn<Competitor, String> col7 = new TableColumn<Competitor, String>("Finish");
-		col7.setCellValueFactory(new PropertyValueFactory<Competitor, String>("finishTime"));
-		TableColumn<Competitor, String> col8 = new TableColumn<Competitor, String>("Result");
-		col8.setCellValueFactory(new PropertyValueFactory<Competitor, String>("result"));
-
-		tableView.getColumns().addAll(col1, col2, col3, col4, col5, col6, col7, col8);
-		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-		col1.setMaxWidth(75); col1.setMinWidth(75);
-		col2.setMinWidth(100);
-		col3.setMinWidth(100);
-		col4.setMinWidth(50); col4.setMaxWidth(50);
-		col5.setMinWidth(100); col5.setMaxWidth(100);
-		col6.setMinWidth(100); col6.setMaxWidth(100);
-		col7.setMinWidth(100); col7.setMaxWidth(100);
-		col8.setMaxWidth(75); col8.setMinWidth(75);
-
+		tableView = new SkiTableView(observableList);
 
 		Competitor[] c = XmlFileUtils.readXMLDecoder(FILE_NAME);
 		tableView.getItems().addAll(Arrays.asList(c));
@@ -170,74 +135,20 @@ public class SkiComp extends AnchorPane {
 		addButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 
-				/**
-				 * Hittar högsta värdet på en åkares nummer
-				 */
-				int biggestNumber = 0;
-				for (int i = 0; i < observableList.size(); i++) {
-					if (Integer.valueOf(observableList.get(i).getNumber()) > biggestNumber) {
-						biggestNumber = Integer.valueOf(observableList.get(i).getNumber());
-
-					}
-				}
-				/**
-				 * Här hittar vi nästa lägsta lediga nummer
-				 */
-
-				int nextFreeNumber = 1;
-//				for (Competitor compeg : observableList) {  //Koden används inte (troligtvis)
-					for (int i = 0; i < observableList.size(); i++) {
-						if (Integer.valueOf(observableList.get(i).getNumber()) == nextFreeNumber) {
-							nextFreeNumber = Integer.valueOf(observableList.get(i).getNumber()) + 1;
-
-						}
-//					}
-				}
-
-				observableList.add(new Competitor(textFieldName.getText(), textFieldLast.getText(), nextFreeNumber, textFieldClub.getText()));
-				textFieldName.clear();
-				textFieldLast.clear();
-				textFieldNumber.clear();
-				textFieldClub.clear();
+				tableView.addCompetitor(
+						new Competitor(textFieldName.getText(), textFieldName.getText(), 0, textFieldClub.getText()));
+				clearInputFields();
 			}
 		});
 
 		Button updateButton = new Button("Update");
-		updateButton.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				int competitorIndex = tableView.getSelectionModel().getSelectedIndex();
-
-				if (tableView.getSelectionModel().getSelectedIndex() != -1) {
-					observableList.set(tableView.getSelectionModel().getSelectedIndex(),
-							new Competitor(textFieldName.getText(), textFieldLast.getText(), Integer.valueOf(textFieldNumber.getText()), 
-									textFieldClub.getText(), observableList.get(competitorIndex).getDisplayStartTime(),
-									observableList.get(competitorIndex).getDisplayMiddleTime(),
-									observableList.get(competitorIndex).getFinishTime(),
-									observableList.get(competitorIndex).getResult()));
-					textFieldName.clear();
-					textFieldLast.clear();
-					textFieldNumber.clear();
-					textFieldClub.clear();
-				}
-			}
-		});
 
 		updateButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				int competitorIndex = tableView.getSelectionModel().getSelectedIndex();
 
-				if (tableView.getSelectionModel().getSelectedIndex() != -1) {
-					observableList.set(tableView.getSelectionModel().getSelectedIndex(),
-									new Competitor(textFieldName.getText(), textFieldLast.getText(), Integer.valueOf(textFieldNumber.getText()),
-													textFieldClub.getText(), observableList.get(competitorIndex).getDisplayStartTime(),
-													observableList.get(competitorIndex).getDisplayMiddleTime(),
-													observableList.get(competitorIndex).getFinishTime(),
-													observableList.get(competitorIndex).getResult()));
-					textFieldName.clear();
-					textFieldLast.clear();
-					textFieldNumber.clear();
-					textFieldClub.clear();
-				}
+				tableView.updateCompetitor(new Competitor(textFieldName.getText(), textFieldLast.getText(),
+						Integer.valueOf(textFieldNumber.getText()), textFieldClub.getText()));
+				clearInputFields();
 			}
 		});
 
@@ -248,12 +159,8 @@ public class SkiComp extends AnchorPane {
 				if (tableView.getSelectionModel().getSelectedIndex() != -1) {
 
 					observableList.remove(tableView.getSelectionModel().getSelectedIndex());
-					textFieldName.clear();
-					textFieldLast.clear();
-					textFieldNumber.clear();
-					textFieldClub.clear();
+					clearInputFields();
 				}
-
 			}
 		});
 
@@ -261,13 +168,9 @@ public class SkiComp extends AnchorPane {
 		deleteAllButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				observableList.clear();
-				textFieldName.clear();
-				textFieldLast.clear();
-				textFieldNumber.clear();
-				textFieldClub.clear();
+				clearInputFields();
 			}
 		});
-
 
 		Button stopButton = new Button("Stop");
 		stopButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -305,7 +208,7 @@ public class SkiComp extends AnchorPane {
 		 * startTime och visar den i rätt format i tableViewn.
 		 */
 		massStart.setOnAction(e -> {
-			
+
 			String massStartTime = "10:30:00";
 			SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
 			Date date = null;
@@ -326,10 +229,10 @@ public class SkiComp extends AnchorPane {
 			observableList.clear();
 			observableList.addAll(competitorsList);
 		});
-		
+
 		Region leftAddButtonLine = new Region();
 		HBox.setHgrow(leftAddButtonLine, Priority.ALWAYS);
-		
+
 		HBox buttonLine = new HBox();
 		buttonLine.getChildren().addAll(leftAddButtonLine, addButton, updateButton, deleteButton, deleteAllButton);
 		buttonLine.setSpacing(50.0);
@@ -338,17 +241,17 @@ public class SkiComp extends AnchorPane {
 		VBox colLeft = new VBox();
 		VBox colRight = new VBox();
 		HBox addCompetitorframe = new HBox();
-		
+
 		colLeft.getChildren().addAll(addCompetitorLine);
 		colRight.getChildren().addAll(buttonLine);
-	
+
 		colRight.setAlignment(Pos.CENTER);
 		HBox.setHgrow(colRight, Priority.ALWAYS);
 		addCompetitorframe.getStyleClass().add("competitor");
-		addCompetitorframe.getChildren().addAll(colLeft,colRight);
-	
+		addCompetitorframe.getChildren().addAll(colLeft, colRight);
+
 		///////////////////////////////////////
-		vbox.getChildren().addAll(addCompetitorframe , Clockline, tableView);
+		vbox.getChildren().addAll(addCompetitorframe, Clockline, tableView);
 		getChildren().addAll(vbox);
 	}
 
@@ -358,7 +261,17 @@ public class SkiComp extends AnchorPane {
 	 * @return ObservableList {@link ObservableList} <{@link Competitor}>
 	 */
 	public ObservableList<Competitor> getCompetitorList() {
+		ObservableList<Competitor> obl = tableView.getItems();
+		return obl;
+	}
 
-		return tableView.getItems();
+	/**
+	 * Clears inputfields of all data
+	 */
+	private void clearInputFields() {
+		textFieldName.clear();
+		textFieldLast.clear();
+		textFieldNumber.clear();
+		textFieldClub.clear();
 	}
 }

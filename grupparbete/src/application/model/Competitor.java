@@ -81,6 +81,7 @@ public class Competitor implements Serializable {
 	
 	public void setStartTime (Long startTime) {
 		this.startTime = startTime;
+		setDisplayStartTime();
 	}
 	
 	public Long getMiddleTime() {
@@ -89,6 +90,7 @@ public class Competitor implements Serializable {
 	
 	public void setMiddleTime(Long middleTime) {
 		this.middleTime = middleTime;
+		setDisplayMiddleTime();
 	}
 	
 	public String getFinishTime() {
