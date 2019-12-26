@@ -16,6 +16,7 @@ public class Competitor implements Serializable {
 	private Long middleTime = 0L;
 	private String finishTime = "0";
 	private Integer result = 0;
+	private boolean isStarted = false;
 	
 	public Competitor() {
 		
@@ -125,6 +126,13 @@ public class Competitor implements Serializable {
 		return displayMiddleTime;
 	}
 	
+	public boolean getIsStarted() {
+		return isStarted;
+	}
+	
+	public void setIsStarted(boolean isStarted) {
+		this.isStarted = isStarted;
+	}
 }
 
 
