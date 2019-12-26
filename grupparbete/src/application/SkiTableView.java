@@ -71,9 +71,9 @@ public class SkiTableView extends TableView<Competitor>  {
 
 			int nextFreeNumber = 1;
 //			for (Competitor compeg : observableList) {  //FUL KOD, utan kommentar!!!
-//			for (int i = 0; i < observableList.size(); i++) {
-			for (int j = 0 ; j <  observableList.size(); j++) { //Old style kod som är snabbare
-				for (int i = j; i < observableList.size(); i++) {
+//				for (int i = 0; i < observableList.size(); i++) {
+			for (int j = 0 ; j <  observableList.size(); j++) { //Old style kod
+				for (int i = 0; i < observableList.size(); i++) {
 					if (Integer.valueOf(observableList.get(i).getNumber()) == nextFreeNumber) {
 						nextFreeNumber = Integer.valueOf(observableList.get(i).getNumber()) + 1;
 					}
@@ -89,6 +89,7 @@ public class SkiTableView extends TableView<Competitor>  {
 
 			if (getSelectionModel().getSelectedIndex() != -1) {
 								
+				competitor.setNumber(observableList.get(competitorIndex).getNumber());
 				competitor.setStartTime(observableList.get(competitorIndex).getStartTime());
 				competitor.setMiddleTime(observableList.get(competitorIndex).getMiddleTime());
 				competitor.setFinishTime(observableList.get(competitorIndex).getFinishTime());
