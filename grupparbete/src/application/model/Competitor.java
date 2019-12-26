@@ -6,6 +6,10 @@ import java.util.Date;
 
 public class Competitor implements Serializable {
 	
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = -366688627924512042L;
 	private String firstName = "";
 	private String lastName = "";
 	private Integer number = 0;
@@ -16,6 +20,7 @@ public class Competitor implements Serializable {
 	private Long middleTime = 0L;
 	private String finishTime = "0";
 	private Integer result = 0;
+	private boolean isStarted = false;
 	
 	public Competitor() {
 		
@@ -81,6 +86,7 @@ public class Competitor implements Serializable {
 	
 	public void setStartTime (Long startTime) {
 		this.startTime = startTime;
+		//this.displayStartTime = startTime.toString();
 		setDisplayStartTime();
 	}
 	
@@ -90,6 +96,7 @@ public class Competitor implements Serializable {
 	
 	public void setMiddleTime(Long middleTime) {
 		this.middleTime = middleTime;
+		//this.displayMiddleTime = middleTime.toString();
 		setDisplayMiddleTime();
 	}
 	
@@ -125,6 +132,13 @@ public class Competitor implements Serializable {
 		return displayMiddleTime;
 	}
 	
+	public boolean getIsStarted() {
+		return isStarted;
+	}
+	
+	public void setIsStarted(boolean isStarted) {
+		this.isStarted = isStarted;
+	}
 }
 
 
