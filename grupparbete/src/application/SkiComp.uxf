@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>5</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>600</x>
+      <y>45</y>
+      <w>80</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>application::Timer
+--
+~currentTime = 0: long
+~timeline: Timeline
+~time: Text
+--
++Timer(Text time): ctor
++start(): void
++stop(): void
++getTime(): long
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>35</x>
+      <y>230</y>
+      <w>185</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>application::AddCompetitorframe
+--
+~textFieldName = null: TextField
+~textFieldLast = null: TextField
+~textFieldClub = null: TextField
+--
++AddCompetitorframe(): ctor
++AddCompetitorframe(SkiTableView skiTableView): ctor
+-clearInputFields(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>75</y>
+      <w>195</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>application::Main
+--
+~FILE_NAME = "src\\application\\resources\\file.xml": String
+~root = null: SkiComp
+~primaryStage = null: Stage
+--
++start(Stage primaryStage): void
++stop(): void
++main(String[] args): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>275</x>
+      <y>85</y>
+      <w>195</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>application::SkiComp
+--
+~FILE_NAME = "src\\application\\resources\\file.xml": String
+-tableView = null: SkiTableView
+~competitorsList = null: List&lt;Competitor&gt;
+~timer: Timer
+--
++SkiComp(): ctor
++getCompetitorList(): ObservableList&lt;Competitor&gt;
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>550</x>
+      <y>275</y>
+      <w>210</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>application::SkiTableView
+--
+--
++SkiTableView(): ctor
+~SkiTableView(ObservableList&lt;Competitor&gt; observableList): ctor
++getCompetitorList(): ObservableList&lt;Competitor&gt;
++addCompetitor(Competitor competitor): void
++updateCompetitor(Competitor competitor): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>295</x>
+      <y>265</y>
+      <w>190</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>application.model::Competitor
+--
+-serialVersionUID = -366688627924512042L: long
+-firstName = "": String
+-lastName = "": String
+-number = 0: Integer
+-club = "": String
+-startTime = 0L: Long
+-displayStartTime = "0": String
+-displayMiddleTime = "0": String
+-middleTime = 0L: Long
+-finishTime = "0": String
+-result = 0: Integer
+-isStarted = false: boolean
+--
++Competitor(): ctor
++Competitor(String firstName, String lastName, Integer number, String club): ctor
++Competitor(String firstName, String lastName, Integer number, String club, String displayStartTime, String displayMiddleTime, String finishTime, int result): ctor
++getFirstName(): String
++setFirstName(String firstName): void
++getLastName(): String
++setLastName(String lastName): void
++getNumber(): Integer
++setNumber(Integer number): void
++getClub(): String
++setClub(String club): void
++getStartTime(): Long
++setStartTime(Long startTime): void
++getMiddleTime(): Long
++setMiddleTime(Long middleTime): void
++getFinishTime(): String
++setFinishTime(String finishTime): void
++getResult(): Integer
++setResult(Integer result): void
++setDisplayStartTime(): void
++getDisplayStartTime(): String
++setDisplayMiddleTime(): void
++getDisplayMiddleTime(): String
++getIsStarted(): boolean
++setIsStarted(boolean isStarted): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>190</x>
+      <y>10</y>
+      <w>275</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>application.utils::XmlFileUtils
+--
+--
++writeXMLEncoder(ObservableList&lt;Competitor&gt; competitor, String filename): void
++readXMLDecoder(String filename): Competitor[]
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>120</x>
+      <y>155</y>
+      <w>170</w>
+      <h>85</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..n
+m2=0..1
+teaches to &gt;</panel_attributes>
+    <additional_attributes>320.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>370</x>
+      <y>155</y>
+      <w>60</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..n
+m2=0..1
+teaches to &gt;</panel_attributes>
+    <additional_attributes>40.0;10.0;10.0;220.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>415</x>
+      <y>155</y>
+      <w>230</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+has &gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;440.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>465</x>
+      <y>100</y>
+      <w>145</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+uses &gt;</panel_attributes>
+    <additional_attributes>10.0;60.0;270.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>480</x>
+      <y>305</y>
+      <w>80</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+uses &gt;</panel_attributes>
+    <additional_attributes>10.0;40.0;140.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>85</x>
+      <y>30</y>
+      <w>115</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+uses &gt;</panel_attributes>
+    <additional_attributes>10.0;90.0;210.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>215</x>
+      <y>265</y>
+      <w>90</w>
+      <h>85</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+uses &gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>305</x>
+      <y>50</y>
+      <w>85</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+&lt; uses </panel_attributes>
+    <additional_attributes>150.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>190</x>
+      <y>105</y>
+      <w>95</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1
+uses &gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;170.0;30.0</additional_attributes>
+  </element>
+</diagram>
