@@ -1,3 +1,4 @@
+
 package application;
 
 import application.model.Competitor;
@@ -15,6 +16,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
+
+/**
+ *  Class for add/update/delete competitors.
+ * @author nilin
+ */
 public class AddCompetitorframe extends HBox {
 	
 	TextField textFieldName = null;
@@ -22,13 +28,117 @@ public class AddCompetitorframe extends HBox {
 //	TextField textFieldNumber = null;
 	TextField textFieldClub = null;
 	
+	SkiTableView skiTableView = null;
+	
+	/**
+	 * Default constructor.
+	 */
 	public AddCompetitorframe() {
-		// TODO Auto-generated constructor stub
 	}
 	
+	
+	/**
+	 * Constuctor. 
+	 * @param {@link skiTableView} 
+	 */
 	public AddCompetitorframe(SkiTableView skiTableView) {
 		super(new HBox());
+		this.skiTableView = skiTableView;
 		
+		VBox addCompetitorLine = setupInputFields();	
+		HBox buttonLine = setupButtons();
+
+		skiTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent mouseEvent) {
+
+				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+					if (mouseEvent.getClickCount() == 2) {
+						if (skiTableView.getSelectionModel().getSelectedIndex() != -1) {
+							Competitor comp = skiTableView.getSelectionModel().getSelectedItem();
+							textFieldName.setText(comp.getFirstName());
+							textFieldLast.setText(comp.getLastName());
+							textFieldClub.setText(comp.getClub());
+						}
+					}
+				}
+			}
+		});
+		
+		VBox colLeft = new VBox();
+		VBox colRight = new VBox();
+
+		colLeft.getChildren().addAll(addCompetitorLine);
+		colRight.getChildren().addAll(buttonLine);
+
+		colRight.setAlignment(Pos.CENTER);
+		HBox.setHgrow(colRight, Priority.ALWAYS);
+		super.getStyleClass().add("competitor");
+		super.getChildren().addAll(colLeft, colRight);
+	}
+
+
+	/**
+	 * Method for setting up buttons and actions.
+	 * @param skiTableView
+	 * @return
+	 */
+	public HBox setupButtons() {
+		HBox buttonLine = new HBox();
+
+		Button addButton = new Button("Add");
+		addButton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				skiTableView.addCompetitor(
+						new Competitor(textFieldName.getText(), textFieldName.getText(), 0, textFieldClub.getText()));
+				clearInputFields();
+			}
+		});
+
+		Button updateButton = new Button("Update");
+		updateButton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				skiTableView.updateCompetitor(new Competitor(textFieldName.getText(), textFieldLast.getText(),
+						0, textFieldClub.getText()));			
+				
+				clearInputFields();
+			}
+		});
+
+		Button deleteButton = new Button("Delete");
+		deleteButton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				
+				if (skiTableView.getSelectionModel().getSelectedIndex() != -1) {
+					skiTableView.getItems().remove(skiTableView.getSelectionModel().getSelectedIndex());
+					clearInputFields();
+				}
+			}
+		});
+
+		Button deleteAllButton = new Button("Delete all");
+		deleteAllButton.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				skiTableView.getItems().clear();
+				clearInputFields();
+			}
+		});
+		
+		Region leftAddButtonLine = new Region();
+		HBox.setHgrow(leftAddButtonLine, Priority.ALWAYS);
+
+		buttonLine.getChildren().addAll(leftAddButtonLine, addButton, updateButton, deleteButton, deleteAllButton);
+		buttonLine.setSpacing(50.0);
+		buttonLine.setPadding(new Insets(0, 30, 0, 0));
+		return buttonLine;
+	}
+
+
+	/**
+	 * Metod for settup input fields with labels.
+	 * @return {@link VBox}
+	 */
+	public VBox setupInputFields() {
 		Label labelName = new Label("First name\t");
 		Label labelLast = new Label("Last name\t");
 		Label labelClub = new Label("Club\t\t\t");
@@ -52,84 +162,7 @@ public class AddCompetitorframe extends HBox {
 		addCompetitorLine.setSpacing(5.0);
 		addCompetitorLine.getStyleClass().add("competitor");
 		addCompetitorLine.setPadding(new Insets(10, 10, 10, 10));
-
-		Button addButton = new Button("Add");
-		addButton.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-
-				skiTableView.addCompetitor(
-						new Competitor(textFieldName.getText(), textFieldName.getText(), 0, textFieldClub.getText()));
-				clearInputFields();
-			}
-		});
-
-		Button updateButton = new Button("Update");
-
-		updateButton.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-
-				skiTableView.updateCompetitor(new Competitor(textFieldName.getText(), textFieldLast.getText(),
-						0, textFieldClub.getText()));			
-				
-				clearInputFields();
-			}
-		});
-
-		Button deleteButton = new Button("Delete");
-		deleteButton.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-
-				if (skiTableView.getSelectionModel().getSelectedIndex() != -1) {
-
-					skiTableView.getItems().remove(skiTableView.getSelectionModel().getSelectedIndex());
-					clearInputFields();
-				}
-			}
-		});
-
-		Button deleteAllButton = new Button("Delete all");
-		deleteAllButton.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-				skiTableView.getItems().clear();
-				clearInputFields();
-			}
-		});
-		
-		skiTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent mouseEvent) {
-
-				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-					if (mouseEvent.getClickCount() == 2) {
-						if (skiTableView.getSelectionModel().getSelectedIndex() != -1) {
-							Competitor comp = skiTableView.getSelectionModel().getSelectedItem();
-							textFieldName.setText(comp.getFirstName());
-							textFieldLast.setText(comp.getLastName());
-							textFieldClub.setText(comp.getClub());
-						}
-					}
-				}
-			}
-		});
-		
-		Region leftAddButtonLine = new Region();
-		HBox.setHgrow(leftAddButtonLine, Priority.ALWAYS);
-
-		HBox buttonLine = new HBox();
-		buttonLine.getChildren().addAll(leftAddButtonLine, addButton, updateButton, deleteButton, deleteAllButton);
-		buttonLine.setSpacing(50.0);
-		buttonLine.setPadding(new Insets(0, 30, 0, 0));
-
-		VBox colLeft = new VBox();
-		VBox colRight = new VBox();
-
-		colLeft.getChildren().addAll(addCompetitorLine);
-		colRight.getChildren().addAll(buttonLine);
-
-		colRight.setAlignment(Pos.CENTER);
-		HBox.setHgrow(colRight, Priority.ALWAYS);
-		super.getStyleClass().add("competitor");
-		super.getChildren().addAll(colLeft, colRight);
+		return addCompetitorLine;
 	}
 	
 	/**

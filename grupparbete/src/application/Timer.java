@@ -9,48 +9,59 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.text.Text;
 
+/**
+ * Class for getting times.
+ * 
+ * @author nilin
+ */
 public class Timer {
-  long currentTime = 0;
-  Timeline timeline;
-  Text time;
+	long currentTime = 0;
+	Timeline timeline;
+	Text time;
 
-  public Timer(Text time) {
-    this.time = time;
-  }
+	/**
+	 * Constuctor for the clock time.
+	 * 
+	 * @param time {@link Text}
+	 */
+	public Timer(Text time) {
+		this.time = time;
+	}
 
-  // Start timer so it start count up
-  public void start() {
-    long endTime = System.currentTimeMillis() - currentTime;
-    DateFormat timeFormat = new SimpleDateFormat( "mm:ss:SSS" );
+	/**
+	 * Start timer so it start count up.
+	 */
+	public void start() {
+		long endTime = System.currentTimeMillis() - currentTime;
+		DateFormat timeFormat = new SimpleDateFormat("mm:ss:SSS");
 
-    this.timeline = new Timeline(
-      new KeyFrame(
-        Duration.millis(1),
-        event -> {
-          this.currentTime = System.currentTimeMillis() - endTime;
+		this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
+			this.currentTime = System.currentTimeMillis() - endTime;
 
-          if ( currentTime < 0 ) {
-            time.setText(timeFormat.format(0));
-          } else {
-            time.setText(timeFormat.format(currentTime));
-          }
-        }
-      )
-    );
+			if (currentTime < 0) {
+				time.setText(timeFormat.format(0));
+			} else {
+				time.setText(timeFormat.format(currentTime));
+			}
+		}));
 
-    timeline.setCycleCount( Animation.INDEFINITE );
-    timeline.play();
-  }
+		timeline.setCycleCount(Animation.INDEFINITE);
+		timeline.play();
+	}
 
-  public void stop() {
-    timeline.stop();
-  }
+	/**
+	 * Stop timer from counting up.
+	 */
+	public void stop() {
+		timeline.stop();
+	}
 
-  /**
-   * Get the current time within the timer without stopping.
-   * @return time in milliseconds
-   */
-  public long getTime() {
-    return currentTime;
-  }
+	/**
+	 * Get the current time within the timer without stopping.
+	 * 
+	 * @return time in milliseconds
+	 */
+	public long getTime() {
+		return currentTime;
+	}
 }

@@ -6,11 +6,18 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+/**
+ * Class for creating a table with competitors.
+ * @author nilin
+ */
 public class SkiTableView extends TableView<Competitor>  {
 
+	/**
+	 * Default constructor
+	 */
 	public SkiTableView() {
-		// TODO Auto-generated constructor stub
 	}
+	
 	
 	SkiTableView(ObservableList<Competitor> observableList) {
 		 super(observableList);
@@ -47,12 +54,20 @@ public class SkiTableView extends TableView<Competitor>  {
 		
 	}
 	
-	 public ObservableList<Competitor> getCompetitorList() {
+	 /**
+	 * Method that returns the competitors as a observable list from table. 
+	 * @return {@link ObservableList}<{@link Competitor}> list of competitors
+	 */
+	public ObservableList<Competitor> getCompetitorList() {
 			ObservableList<Competitor> obl = super.getItems();
 			return obl;
 	}
 	 
-	 public void addCompetitor(Competitor competitor) {
+	 /**
+	  * Add a competitor to the table giving the first free number.
+	 * @param {@link Competitor}
+	 */
+	public void addCompetitor(Competitor competitor) {
 		 
 		 	ObservableList<Competitor> observableList = getItems();
 			/**
@@ -83,7 +98,11 @@ public class SkiTableView extends TableView<Competitor>  {
 			observableList.add(competitor);		
 	}
 	 
-	 public void updateCompetitor(Competitor competitor) {
+	 /**
+	 * Uppdate the selected competitor.
+	 * @param {@link Competitor}
+	 */
+	public void updateCompetitor(Competitor competitor) {
 		 ObservableList<Competitor> observableList = getItems();	
 		 int competitorIndex = getSelectionModel().getSelectedIndex();
 

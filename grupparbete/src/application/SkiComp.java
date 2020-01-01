@@ -23,6 +23,10 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+/**
+ * Class får creating a ski completion app.
+ * @author nilin
+ */
 public class SkiComp extends AnchorPane {
 
 	static final String FILE_NAME = "src\\application\\resources\\file.xml";
@@ -31,6 +35,9 @@ public class SkiComp extends AnchorPane {
 
 	Timer timer;
 
+	/**
+	 * Default constructor for setting up the app.
+	 */
 	public SkiComp() {
 
 		VBox vbox = new VBox();
