@@ -95,7 +95,8 @@ public class Competitor implements Serializable {
 	}
 	
 	public void setMiddleTime(Long middleTime) {
-		this.middleTime = middleTime;
+		this.middleTime = middleTime - getStartTime();
+		setDisplayMiddleTime();
 //		this.displayMiddleTime = middleTime.toString();
 //		setDisplayMiddleTime();
 	}
@@ -127,6 +128,9 @@ public class Competitor implements Serializable {
 	}
 	
 	public void setDisplayMiddleTime() {
+		long middleTimeMillis = getMiddleTime();
+		SimpleDateFormat sdf = new SimpleDateFormat("mm:ss:SS");
+		this.displayMiddleTime = sdf.format(middleTimeMillis);
 	}
 	
 	public String getDisplayMiddleTime() {

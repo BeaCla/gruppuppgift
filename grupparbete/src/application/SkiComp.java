@@ -101,6 +101,14 @@ public class SkiComp extends AnchorPane {
 		mellanButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				if (tableView.getSelectionModel().getSelectedIndex() != -1) {
+					competitorsList.clear();
+					competitorsList.addAll(observableList);
+					int selectionIndex = tableView.getSelectionModel().getSelectedIndex();
+					competitorsList.get(selectionIndex).setMiddleTime(timer.getTime());
+					observableList.clear();
+					observableList.addAll(competitorsList);
+				}
 				System.out.println(timer.getTime());
 			}
 		});
