@@ -84,7 +84,7 @@ public class SkiComp extends AnchorPane {
 		Competitor[] c = XmlFileUtils.readXMLDecoder(FILE_NAME);
 		tableView.getItems().addAll(Arrays.asList(c));
 
-		Button stopButton = new Button("Stop");
+		Button stopButton = new Button("Stop/Reset");
 		stopButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				timer.stop();
@@ -106,10 +106,18 @@ public class SkiComp extends AnchorPane {
 				System.out.println(timer.getTime());
 			}
 		});
+		
+		Button finishButton = new Button("Finish");
+		finishButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+			
+			}	
+		});
 
 		VBox clockButtons = new VBox();
 		clockButtons.setSpacing(10.0);
-		clockButtons.getChildren().addAll(startButton, mellanButton, stopButton);
+		clockButtons.getChildren().addAll(startButton, mellanButton, finishButton, stopButton);
 		clockButtons.setPadding(new Insets(10, 10, 10, 10));
 		Clockline.getChildren().addAll(hBoxClock, clockButtons, left, ComButton);
 
