@@ -88,7 +88,7 @@ public class Competitor implements Serializable {
 	public void setStartTime (Long startTime) {
 		this.startTime = startTime;
 //		this.displayStartTime = startTime.toString();
-		setDisplayStartTime();
+//		setDisplayStartTime();
 	}
 	
 	public Long getMiddleTime() {
@@ -118,13 +118,9 @@ public class Competitor implements Serializable {
 	}
 	
 	public void setDisplayStartTime() {
-		String hms = getDisplayStartTime();
-		long hr = TimeUnit.MILLISECONDS.toHours(getStartTime());
-		long min = TimeUnit.MILLISECONDS.toMinutes(getStartTime() - TimeUnit.HOURS.toMillis(hr));
-		long sec = TimeUnit.MILLISECONDS.toSeconds(getStartTime() - TimeUnit.HOURS.toMillis(hr) - TimeUnit.MINUTES.toMillis(min));
-		hms = hms.format("%02d:%02d:%02d", hr, min, sec);
-		this.displayStartTime = hms;
-//		this.displayStartTime = (new SimpleDateFormat("hh:mm:ss")).format(new Date(startTime));
+		long startTimeMillis = getStartTime();
+		SimpleDateFormat sdf = new SimpleDateFormat("mm:ss:SS");
+		this.displayStartTime = sdf.format(startTimeMillis);
 	}
 	
 	public String getDisplayStartTime() {
