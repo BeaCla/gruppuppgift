@@ -64,8 +64,8 @@ public class SkiComp extends AnchorPane {
 		// * End of clock stuff
 
 		Button massStart = new Button("Mass start");
-		Button indi = new Button("Intervall start");
-		Button hunt = new Button("Jaktstart");
+		Button indi = new Button("Interval Start");
+		Button hunt = new Button("Pursuit");
 
 		Region left = new Region();
 		HBox.setHgrow(left, Priority.ALWAYS);
@@ -99,7 +99,7 @@ public class SkiComp extends AnchorPane {
 			}
 		});
 
-		Button mellanButton = new Button("Mellantid");
+		Button mellanButton = new Button("Intermediate");
 		mellanButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {

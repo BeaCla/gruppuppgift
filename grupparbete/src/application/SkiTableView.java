@@ -32,7 +32,7 @@ public class SkiTableView extends TableView<Competitor>  {
 			col4.setCellValueFactory(new PropertyValueFactory<Competitor, String>("club"));
 			TableColumn<Competitor, String> col5 = new TableColumn<Competitor, String>("Start time");
 			col5.setCellValueFactory(new PropertyValueFactory<Competitor, String>("displayStartTime"));
-			TableColumn<Competitor, String> col6 = new TableColumn<Competitor, String>("Middle Time");
+			TableColumn<Competitor, String> col6 = new TableColumn<Competitor, String>("Intermediate");
 			col6.setCellValueFactory(new PropertyValueFactory<Competitor, String>("displayMiddleTime"));
 			TableColumn<Competitor, String> col7 = new TableColumn<Competitor, String>("Finish");
 			col7.setCellValueFactory(new PropertyValueFactory<Competitor, String>("finishTime"));
