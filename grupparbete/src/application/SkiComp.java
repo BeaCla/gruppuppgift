@@ -129,22 +129,11 @@ public class SkiComp extends AnchorPane {
 		 * startTime och visar den i rätt format i tableViewn.
 		 */
 		massStart.setOnAction(e -> {
-
-			String massStartTime = "10:30:00";
-			SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
-			Date date = null;
-			try {
-				date = timeFormatter.parse(massStartTime);
-			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			long timeStamp = date.getTime();
-
+			
 			competitorsList.clear();
 			for (Competitor competitor : observableList) {
 				competitorsList.add(competitor);
-				competitor.setStartTime(timeStamp);
+				competitor.setStartTime(0L);
 				competitor.setDisplayStartTime();
 			}
 			observableList.clear();

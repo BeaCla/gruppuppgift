@@ -3,6 +3,7 @@ package application.model;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class Competitor implements Serializable {
 	
@@ -117,7 +118,13 @@ public class Competitor implements Serializable {
 	}
 	
 	public void setDisplayStartTime() {
-		this.displayStartTime = (new SimpleDateFormat("hh:mm:ss")).format(new Date(startTime));
+		String hms = getDisplayStartTime();
+		long hr = TimeUnit.MILLISECONDS.toHours(getStartTime());
+		long min = TimeUnit.MILLISECONDS.toMinutes(getStartTime() - TimeUnit.HOURS.toMillis(hr));
+		long sec = TimeUnit.MILLISECONDS.toSeconds(getStartTime() - TimeUnit.HOURS.toMillis(hr) - TimeUnit.MINUTES.toMillis(min));
+		hms = hms.format("%02d:%02d:%02d", hr, min, sec);
+		this.displayStartTime = hms;
+//		this.displayStartTime = (new SimpleDateFormat("hh:mm:ss")).format(new Date(startTime));
 	}
 	
 	public String getDisplayStartTime() {
@@ -125,7 +132,6 @@ public class Competitor implements Serializable {
 	}
 	
 	public void setDisplayMiddleTime() {
-		this.displayMiddleTime = (new SimpleDateFormat("hh:mm:ss")).format(new Date(middleTime));
 	}
 	
 	public String getDisplayMiddleTime() {
