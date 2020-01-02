@@ -16,6 +16,7 @@ import javafx.scene.text.Text;
  */
 public class Timer {
 	long currentTime = 0;
+	long endTime = 0;
 	Timeline timeline;
 	Text time;
 	DateFormat timeFormat = null;
@@ -28,15 +29,20 @@ public class Timer {
 	public Timer(Text time) {
 		this.time = time;
 		timeFormat = new SimpleDateFormat("mm:ss:SSS");
+
+		this.timeline = new Timeline();
+		this.timeline.setCycleCount(Animation.INDEFINITE);
 	}
 
 	/**
 	 * Start timer so it start count up.
 	 */
 	public void start() {
-		long endTime = System.currentTimeMillis() - currentTime;
-
-		this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
+		endTime = System.currentTimeMillis() - currentTime;
+		if (timeline.getStatus() != null) {
+			timeline.getKeyFrames().clear();
+			
+			timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1), event -> {
 			this.currentTime = System.currentTimeMillis() - endTime;
 
 			if (currentTime < 0) {
@@ -45,9 +51,8 @@ public class Timer {
 				time.setText(timeFormat.format(currentTime));
 			}
 		}));
-
-		timeline.setCycleCount(Animation.INDEFINITE);
-		timeline.play();
+		}
+		timeline.playFromStart();
 	}
 
 	/**
@@ -57,6 +62,7 @@ public class Timer {
 		timeline.stop();
 		time.setText(timeFormat.format(0));
 		this.currentTime = 0L;
+		this.endTime = 0L;
 	}
 
 	/**
