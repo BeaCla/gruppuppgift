@@ -22,7 +22,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 
 /**
  * Class får creating a ski completion app.
@@ -68,9 +72,14 @@ public class SkiComp extends AnchorPane {
 		Button indi = new Button("Interval Start");
 		Button hunt = new Button("Pursuit");
 		
-		CheckBox femton = new CheckBox("15 sec");
-		CheckBox trettio = new CheckBox("30 sec");
-		Text intervalText = new Text("Choose what interval you want:");
+		RadioButton femton = new RadioButton("15 sec");
+		RadioButton trettio = new RadioButton("30 sec");
+		Text intervalText = new Text("Choose interval:");
+		
+		ToggleGroup radioGroup = new ToggleGroup();
+
+        femton.setToggleGroup(radioGroup);
+        trettio.setToggleGroup(radioGroup);
 
 		Region left = new Region();
 		HBox.setHgrow(left, Priority.ALWAYS);
@@ -79,13 +88,20 @@ public class SkiComp extends AnchorPane {
 		intervalBox.setSpacing(30.0);
 		intervalBox.setPadding(new Insets(0, 10, 0, 0));
 		intervalBox.getChildren().addAll(intervalText, femton, trettio);
-		intervalBox.setAlignment(Pos.BOTTOM_CENTER);
+		intervalBox.setAlignment(Pos.CENTER);
 
-		HBox ComButton = new HBox(intervalBox);
-		ComButton.setSpacing(30.0);
-		ComButton.setPadding(new Insets(0, 30, 0, 0));
-		ComButton.getChildren().addAll(massStart, indi, hunt);
-		ComButton.setAlignment(Pos.CENTER);
+		HBox comButton = new HBox();
+		comButton.setSpacing(30.0);
+		comButton.setPadding(new Insets(0, 30, 0, 0));
+		comButton.getChildren().addAll(massStart, indi, hunt);
+		comButton.setAlignment(Pos.CENTER);
+		
+		VBox intervalcom = new VBox();
+		intervalcom.getChildren().addAll(comButton, intervalBox);
+		intervalcom.setAlignment(Pos.CENTER);
+		intervalcom.setPadding(new Insets(0, 30, 0, 0));
+		intervalcom.setSpacing(20.0);
+		
 
 		/////////////////////////////////////
 		competitorsList = new ArrayList<Competitor>();
@@ -137,7 +153,7 @@ public class SkiComp extends AnchorPane {
 		clockButtons.setSpacing(10.0);
 		clockButtons.getChildren().addAll(startButton, mellanButton, finishButton, stopButton);
 		clockButtons.setPadding(new Insets(10, 10, 10, 10));
-		Clockline.getChildren().addAll(hBoxClock, clockButtons, left, ComButton);
+		Clockline.getChildren().addAll(hBoxClock, clockButtons, left, intervalcom);
 
 		/**
 		 * Actionevent för masstart Tar den inmatade tiden "t.ex. 10:00:30" och
@@ -163,15 +179,31 @@ public class SkiComp extends AnchorPane {
 		
 		indi.setOnAction(e -> {
 			competitorsList.clear();
+			int intervalTime = 0;
+			long time = 0;
+			
+			if (radioGroup.getSelectedToggle() == femton) {
+				intervalTime = 15000;
+			}
+			
+			else if (radioGroup.getSelectedToggle() == trettio) {
+				intervalTime = 30000;
+			}
+			
+			else  {
+				return;
+			}
+			
 			for (Competitor competitor : observableList) {
 				competitorsList.add(competitor);
-				competitor.setStartTime(0L);
-				competitor.setDisplayStartTime();
+				competitor.setStartTime(time);
+				time = time + intervalTime;
 			}
 			observableList.clear();
 			observableList.addAll(competitorsList);
 			
 		});
+	
 
 
 		///////////////////////////////////////
