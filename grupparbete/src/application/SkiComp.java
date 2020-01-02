@@ -22,6 +22,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.control.CheckBox;
 
 /**
  * Class får creating a ski completion app.
@@ -66,11 +67,21 @@ public class SkiComp extends AnchorPane {
 		Button massStart = new Button("Mass start");
 		Button indi = new Button("Interval Start");
 		Button hunt = new Button("Pursuit");
+		
+		CheckBox femton = new CheckBox("15 sec");
+		CheckBox trettio = new CheckBox("30 sec");
+		Text intervalText = new Text("Choose what interval you want:");
 
 		Region left = new Region();
 		HBox.setHgrow(left, Priority.ALWAYS);
+		
+		HBox intervalBox = new HBox();
+		intervalBox.setSpacing(30.0);
+		intervalBox.setPadding(new Insets(0, 10, 0, 0));
+		intervalBox.getChildren().addAll(intervalText, femton, trettio);
+		intervalBox.setAlignment(Pos.BOTTOM_CENTER);
 
-		HBox ComButton = new HBox();
+		HBox ComButton = new HBox(intervalBox);
 		ComButton.setSpacing(30.0);
 		ComButton.setPadding(new Insets(0, 30, 0, 0));
 		ComButton.getChildren().addAll(massStart, indi, hunt);
@@ -144,6 +155,22 @@ public class SkiComp extends AnchorPane {
 			}
 			observableList.clear();
 			observableList.addAll(competitorsList);
+		});
+		
+		/**
+		 * ActionEvent for Interval Button. 
+		 */
+		
+		indi.setOnAction(e -> {
+			competitorsList.clear();
+			for (Competitor competitor : observableList) {
+				competitorsList.add(competitor);
+				competitor.setStartTime(0L);
+				competitor.setDisplayStartTime();
+			}
+			observableList.clear();
+			observableList.addAll(competitorsList);
+			
 		});
 
 
