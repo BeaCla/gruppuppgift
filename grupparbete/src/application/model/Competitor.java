@@ -87,7 +87,6 @@ public class Competitor implements Serializable {
 	
 	public void setStartTime (Long startTime) {
 		this.startTime = startTime;
-//		this.displayStartTime = startTime.toString();
 		setDisplayStartTime();
 	}
 	
@@ -96,8 +95,9 @@ public class Competitor implements Serializable {
 	}
 	
 	public void setMiddleTime(Long middleTime) {
-		this.middleTime = middleTime;
-		this.displayMiddleTime = middleTime.toString();
+		this.middleTime = middleTime - getStartTime();
+		setDisplayMiddleTime();
+//		this.displayMiddleTime = middleTime.toString();
 //		setDisplayMiddleTime();
 	}
 	
@@ -118,8 +118,9 @@ public class Competitor implements Serializable {
 	}
 	
 	public void setDisplayStartTime() {
-		this.displayStartTime = convertMilliToDisplayString(getStartTime());
-//		this.displayStartTime = (new SimpleDateFormat("hh:mm:ss")).format(new Date(startTime));
+		long startTimeMillis = getStartTime();
+		SimpleDateFormat sdf = new SimpleDateFormat("mm:ss:SS");
+		this.displayStartTime = sdf.format(startTimeMillis);
 	}
 	
 	public String getDisplayStartTime() {
@@ -127,6 +128,9 @@ public class Competitor implements Serializable {
 	}
 	
 	public void setDisplayMiddleTime() {
+		long middleTimeMillis = getMiddleTime();
+		SimpleDateFormat sdf = new SimpleDateFormat("mm:ss:SS");
+		this.displayMiddleTime = sdf.format(middleTimeMillis);
 	}
 	
 	public String getDisplayMiddleTime() {
@@ -139,19 +143,6 @@ public class Competitor implements Serializable {
 	
 	public void setIsStarted(boolean isStarted) {
 		this.isStarted = isStarted;
-	}
-	
-	/**
-	 * Method to convert milliseconds to string format hh:mm:ss
-	 */
-	public String convertMilliToDisplayString(Long millis) {
-		
-		long hr = TimeUnit.MILLISECONDS.toHours(millis);
-		long min = TimeUnit.MILLISECONDS.toMinutes(millis - TimeUnit.HOURS.toMillis(hr));
-		long sec = TimeUnit.MILLISECONDS.toSeconds(millis - TimeUnit.HOURS.toMillis(hr) - TimeUnit.MINUTES.toMillis(min));
-		
-		String hms = String.format("%02d:%02d:%02d", hr, min, sec);
-		return hms;
 	}
 }
 

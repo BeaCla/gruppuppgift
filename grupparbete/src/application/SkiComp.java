@@ -22,6 +22,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 
 /**
  * Class får creating a ski completion app.
@@ -66,15 +71,37 @@ public class SkiComp extends AnchorPane {
 		Button massStart = new Button("Mass start");
 		Button indi = new Button("Interval Start");
 		Button hunt = new Button("Pursuit");
+		
+		RadioButton femton = new RadioButton("15 sec");
+		RadioButton trettio = new RadioButton("30 sec");
+		Text intervalText = new Text("Choose interval:");
+		
+		ToggleGroup radioGroup = new ToggleGroup();
+
+        femton.setToggleGroup(radioGroup);
+        trettio.setToggleGroup(radioGroup);
 
 		Region left = new Region();
 		HBox.setHgrow(left, Priority.ALWAYS);
+		
+		HBox intervalBox = new HBox();
+		intervalBox.setSpacing(30.0);
+		intervalBox.setPadding(new Insets(0, 10, 0, 0));
+		intervalBox.getChildren().addAll(intervalText, femton, trettio);
+		intervalBox.setAlignment(Pos.CENTER);
 
-		HBox ComButton = new HBox();
-		ComButton.setSpacing(30.0);
-		ComButton.setPadding(new Insets(0, 30, 0, 0));
-		ComButton.getChildren().addAll(massStart, indi, hunt);
-		ComButton.setAlignment(Pos.CENTER);
+		HBox comButton = new HBox();
+		comButton.setSpacing(30.0);
+		comButton.setPadding(new Insets(0, 30, 0, 0));
+		comButton.getChildren().addAll(massStart, indi, hunt);
+		comButton.setAlignment(Pos.CENTER);
+		
+		VBox intervalcom = new VBox();
+		intervalcom.getChildren().addAll(comButton, intervalBox);
+		intervalcom.setAlignment(Pos.CENTER);
+		intervalcom.setPadding(new Insets(0, 30, 0, 0));
+		intervalcom.setSpacing(20.0);
+		
 
 		/////////////////////////////////////
 		competitorsList = new ArrayList<Competitor>();
@@ -101,6 +128,14 @@ public class SkiComp extends AnchorPane {
 		mellanButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				if (tableView.getSelectionModel().getSelectedIndex() != -1) {
+					competitorsList.clear();
+					competitorsList.addAll(observableList);
+					int selectionIndex = tableView.getSelectionModel().getSelectedIndex();
+					competitorsList.get(selectionIndex).setMiddleTime(timer.getTime());
+					observableList.clear();
+					observableList.addAll(competitorsList);
+				}
 				System.out.println(timer.getTime());
 			}
 		});
@@ -118,7 +153,7 @@ public class SkiComp extends AnchorPane {
 		clockButtons.setSpacing(10.0);
 		clockButtons.getChildren().addAll(startButton, mellanButton, finishButton, stopButton);
 		clockButtons.setPadding(new Insets(10, 10, 10, 10));
-		Clockline.getChildren().addAll(hBoxClock, clockButtons, left, ComButton);
+		Clockline.getChildren().addAll(hBoxClock, clockButtons, left, intervalcom);
 
 		/**
 		 * Actionevent för masstart Tar den inmatade tiden "t.ex. 10:00:30" och
@@ -132,11 +167,43 @@ public class SkiComp extends AnchorPane {
 			for (Competitor competitor : observableList) {
 				competitorsList.add(competitor);
 				competitor.setStartTime(0L);
-				competitor.setDisplayStartTime();
+//				competitor.setDisplayStartTime(); // Denna körs från setStartTime() istället;
 			}
 			observableList.clear();
 			observableList.addAll(competitorsList);
 		});
+		
+		/**
+		 * ActionEvent for Interval Button. 
+		 */
+		
+		indi.setOnAction(e -> {
+			competitorsList.clear();
+			int intervalTime = 0;
+			long time = 0;
+			
+			if (radioGroup.getSelectedToggle() == femton) {
+				intervalTime = 15000;
+			}
+			
+			else if (radioGroup.getSelectedToggle() == trettio) {
+				intervalTime = 30000;
+			}
+			
+			else  {
+				return;
+			}
+			
+			for (Competitor competitor : observableList) {
+				competitorsList.add(competitor);
+				competitor.setStartTime(time);
+				time = time + intervalTime;
+			}
+			observableList.clear();
+			observableList.addAll(competitorsList);
+			
+		});
+	
 
 
 		///////////////////////////////////////
