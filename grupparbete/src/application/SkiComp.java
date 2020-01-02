@@ -132,7 +132,7 @@ public class SkiComp extends AnchorPane {
 			for (Competitor competitor : observableList) {
 				competitorsList.add(competitor);
 				competitor.setStartTime(0L);
-				competitor.setDisplayStartTime();
+//				competitor.setDisplayStartTime(); // Denna körs från setStartTime() istället;
 			}
 			observableList.clear();
 			observableList.addAll(competitorsList);
