@@ -56,6 +56,7 @@ public class Timer {
 	public void stop() {
 		timeline.stop();
 		time.setText(timeFormat.format(0));
+		this.currentTime = 0L;
 	}
 
 	/**
