@@ -18,6 +18,7 @@ public class Timer {
 	long currentTime = 0;
 	Timeline timeline;
 	Text time;
+	DateFormat timeFormat = null;
 
 	/**
 	 * Constuctor for the clock time.
@@ -26,6 +27,7 @@ public class Timer {
 	 */
 	public Timer(Text time) {
 		this.time = time;
+		timeFormat = new SimpleDateFormat("mm:ss:SSS");
 	}
 
 	/**
@@ -33,7 +35,6 @@ public class Timer {
 	 */
 	public void start() {
 		long endTime = System.currentTimeMillis() - currentTime;
-		DateFormat timeFormat = new SimpleDateFormat("mm:ss:SSS");
 
 		this.timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
 			this.currentTime = System.currentTimeMillis() - endTime;
@@ -54,6 +55,8 @@ public class Timer {
 	 */
 	public void stop() {
 		timeline.stop();
+		time.setText(timeFormat.format(0));
+		this.currentTime = 0L;
 	}
 
 	/**

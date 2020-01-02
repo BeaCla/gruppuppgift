@@ -85,10 +85,8 @@ public class SkiComp extends AnchorPane {
 		tableView.getItems().addAll(Arrays.asList(c));
 
 		Button stopButton = new Button("Stop/Reset");
-		stopButton.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
+		stopButton.setOnAction(e-> {
 				timer.stop();
-			}
 		});
 
 		Button startButton = new Button("Start");
