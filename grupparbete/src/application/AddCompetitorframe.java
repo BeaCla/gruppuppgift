@@ -90,7 +90,7 @@ public class AddCompetitorframe extends HBox {
 		addButton.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				skiTableView.addCompetitor(
-						new Competitor(textFieldName.getText(), textFieldName.getText(), 0, textFieldClub.getText()));
+						new Competitor(textFieldName.getText(), textFieldLast.getText(), 0, textFieldClub.getText()));
 				clearInputFields();
 			}
 		});
