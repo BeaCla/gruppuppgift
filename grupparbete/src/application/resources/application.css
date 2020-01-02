@@ -4,6 +4,10 @@
 	-fx-min-width: 65.0;
 }
 
+.clockbutton .button {
+	-fx-min-width: 85.0;
+}
+
 .label{
 	 -fx-text-inner-color: red;
 	 -fx-text-fill: white; 

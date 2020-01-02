@@ -116,6 +116,7 @@ public class SkiComp extends AnchorPane {
 		});
 
 		VBox clockButtons = new VBox();
+		clockButtons.getStyleClass().add("clockbutton");
 		clockButtons.setSpacing(10.0);
 		clockButtons.getChildren().addAll(startButton, mellanButton, finishButton, stopButton);
 		clockButtons.setPadding(new Insets(10, 10, 10, 10));
