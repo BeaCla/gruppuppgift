@@ -118,12 +118,7 @@ public class Competitor implements Serializable {
 	}
 	
 	public void setDisplayStartTime() {
-		String hms = getDisplayStartTime();
-		long hr = TimeUnit.MILLISECONDS.toHours(getStartTime());
-		long min = TimeUnit.MILLISECONDS.toMinutes(getStartTime() - TimeUnit.HOURS.toMillis(hr));
-		long sec = TimeUnit.MILLISECONDS.toSeconds(getStartTime() - TimeUnit.HOURS.toMillis(hr) - TimeUnit.MINUTES.toMillis(min));
-		hms = hms.format("%02d:%02d:%02d", hr, min, sec);
-		this.displayStartTime = hms;
+		this.displayStartTime = convertMilliToDisplayString(getStartTime());
 //		this.displayStartTime = (new SimpleDateFormat("hh:mm:ss")).format(new Date(startTime));
 	}
 	
@@ -144,6 +139,19 @@ public class Competitor implements Serializable {
 	
 	public void setIsStarted(boolean isStarted) {
 		this.isStarted = isStarted;
+	}
+	
+	/**
+	 * Method to convert milliseconds to string format hh:mm:ss
+	 */
+	public String convertMilliToDisplayString(Long millis) {
+		
+		long hr = TimeUnit.MILLISECONDS.toHours(millis);
+		long min = TimeUnit.MILLISECONDS.toMinutes(millis - TimeUnit.HOURS.toMillis(hr));
+		long sec = TimeUnit.MILLISECONDS.toSeconds(millis - TimeUnit.HOURS.toMillis(hr) - TimeUnit.MINUTES.toMillis(min));
+		
+		String hms = String.format("%02d:%02d:%02d", hr, min, sec);
+		return hms;
 	}
 }
 
