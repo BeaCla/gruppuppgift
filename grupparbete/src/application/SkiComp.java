@@ -220,4 +220,7 @@ public class SkiComp extends AnchorPane {
 		ObservableList<Competitor> obl = tableView.getItems();
 		return obl;
 	}
+	
+
+
 }
