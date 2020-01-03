@@ -95,7 +95,7 @@ public class SkiTableView extends TableView<Competitor>  {
 				}
 			}
 			competitor.setNumber(nextFreeNumber);
-			observableList.add(competitor);		
+			observableList.add(nextFreeNumber -1, competitor);
 	}
 	 
 	 /**
