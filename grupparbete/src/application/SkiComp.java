@@ -29,7 +29,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 
 /**
- * Class får creating a ski completion app.
+ * Class for creating a ski competition app.
  * @author nilin
  */
 public class SkiComp extends AnchorPane {
@@ -67,10 +67,18 @@ public class SkiComp extends AnchorPane {
 		hBoxClock.getChildren().addAll(clockText);
 
 		// * End of clock stuff
+		
+		/**
+		 * Buttons for competitions
+		 */
 
 		Button massStart = new Button("Mass start");
 		Button indi = new Button("Interval Start");
 		Button hunt = new Button("Pursuit");
+		
+		/**
+		 * RadioButtons for choosing intervals
+		 */
 		
 		RadioButton femton = new RadioButton("15 sec");
 		RadioButton trettio = new RadioButton("30 sec");
@@ -80,6 +88,10 @@ public class SkiComp extends AnchorPane {
 
         femton.setToggleGroup(radioGroup);
         trettio.setToggleGroup(radioGroup);
+        
+        /**
+         * Design for competitionsbuttons and intervalbuttons. 
+         */
 
 		Region left = new Region();
 		HBox.setHgrow(left, Priority.ALWAYS);
@@ -103,13 +115,16 @@ public class SkiComp extends AnchorPane {
 		intervalcom.setSpacing(20.0);
 		
 
-		/////////////////////////////////////
 		competitorsList = new ArrayList<Competitor>();
 		ObservableList<Competitor> observableList = FXCollections.observableArrayList();
 		tableView = new SkiTableView(observableList);
 
 		Competitor[] c = XmlFileUtils.readXMLDecoder(FILE_NAME);
 		tableView.getItems().addAll(Arrays.asList(c));
+		
+		/**
+		 * ActionEvents for clockbuttons. 
+		 */
 
 		Button stopButton = new Button("Stop/Reset");
 		stopButton.setOnAction(e-> {
@@ -162,6 +177,9 @@ public class SkiComp extends AnchorPane {
 			}	
 		});
 
+		/**
+		 * Design for clock and second pane. 
+		 */
 		VBox clockButtons = new VBox();
 		clockButtons.getStyleClass().add("clockbutton");
 		clockButtons.setSpacing(10.0);
@@ -170,10 +188,7 @@ public class SkiComp extends AnchorPane {
 		Clockline.getChildren().addAll(hBoxClock, clockButtons, left, intervalcom);
 
 		/**
-		 * Actionevent för masstart Tar den inmatade tiden "t.ex. 10:00:30" och
-		 * konverterar den till millisekunder. Millisekunderna sparas i varje accounts
-		 * "startTime". setDisplayStartTime() hämtar i sin tur informationen från
-		 * startTime och visar den i rätt format i tableViewn.
+		 * ActionEvent for masstart button. 
 		 */
 		massStart.setOnAction(e -> {
 			
