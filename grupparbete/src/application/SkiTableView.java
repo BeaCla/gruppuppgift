@@ -18,7 +18,10 @@ public class SkiTableView extends TableView<Competitor>  {
 	public SkiTableView() {
 	}
 	
-	
+	/**
+	 * Setting up a list.
+	 * @param observableList
+	 */
 	SkiTableView(ObservableList<Competitor> observableList) {
 		 super(observableList);
 		 
@@ -35,7 +38,7 @@ public class SkiTableView extends TableView<Competitor>  {
 			TableColumn<Competitor, String> col6 = new TableColumn<Competitor, String>("Intermediate");
 			col6.setCellValueFactory(new PropertyValueFactory<Competitor, String>("displayMiddleTime"));
 			TableColumn<Competitor, String> col7 = new TableColumn<Competitor, String>("Finish");
-			col7.setCellValueFactory(new PropertyValueFactory<Competitor, String>("finishTime"));
+			col7.setCellValueFactory(new PropertyValueFactory<Competitor, String>("displayFinishTime"));
 			TableColumn<Competitor, String> col8 = new TableColumn<Competitor, String>("Result");
 			col8.setCellValueFactory(new PropertyValueFactory<Competitor, String>("result"));
 			
@@ -70,24 +73,15 @@ public class SkiTableView extends TableView<Competitor>  {
 	public void addCompetitor(Competitor competitor) {
 		 
 		 	ObservableList<Competitor> observableList = getItems();
-			/**
-			 * Hittar högsta värdet på en åkares nummer
-			 */
 			int biggestNumber = 0;
 			for (int i = 0; i < observableList.size(); i++) {
 				if (Integer.valueOf(observableList.get(i).getNumber()) > biggestNumber) {
 					biggestNumber = Integer.valueOf(observableList.get(i).getNumber());
-
 				}
 			} 
-			/**
-			 * Här hittar vi nästa lägsta lediga nummer
-			 */
 
 			int nextFreeNumber = 1;
-//			for (Competitor compeg : observableList) {  //FUL KOD, utan kommentar!!!
-//				for (int i = 0; i < observableList.size(); i++) {
-			for (int j = 0 ; j <  observableList.size(); j++) { //Old style kod
+			for (int j = 0 ; j <  observableList.size(); j++) {
 				for (int i = 0; i < observableList.size(); i++) {
 					if (Integer.valueOf(observableList.get(i).getNumber()) == nextFreeNumber) {
 						nextFreeNumber = Integer.valueOf(observableList.get(i).getNumber()) + 1;
@@ -95,7 +89,7 @@ public class SkiTableView extends TableView<Competitor>  {
 				}
 			}
 			competitor.setNumber(nextFreeNumber);
-			observableList.add(competitor);		
+			observableList.add(nextFreeNumber -1, competitor);
 	}
 	 
 	 /**
