@@ -19,7 +19,8 @@ public class Competitor implements Serializable {
 	private String displayStartTime = "0";
 	private String displayMiddleTime = "0";
 	private Long middleTime = 0L;
-	private String finishTime = "0";
+	private Long finishTime = 0L;
+	private String displayFinishTime = "0";
 	private Integer result = 0;
 	private boolean isStarted = false;
 	
@@ -36,14 +37,14 @@ public class Competitor implements Serializable {
 	}
 	
 	public Competitor (String firstName, String lastName, Integer number, String club, String displayStartTime,
-			String displayMiddleTime, String finishTime, int result) {
+			String displayMiddleTime, String displayFinishTime, int result) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.number = number;
 		this.club = club;
 		this.displayStartTime = displayStartTime;
 		this.displayMiddleTime = displayMiddleTime;
-		this.finishTime = finishTime;
+		this.displayFinishTime = displayFinishTime;
 		this.result = result;
 		
 	}
@@ -101,12 +102,13 @@ public class Competitor implements Serializable {
 //		setDisplayMiddleTime();
 	}
 	
-	public String getFinishTime() {
+	public Long getFinishTime() {
 		return finishTime;
 	}
 	
-	public void setFinishTime(String finishTime) {
-		this.finishTime = finishTime;
+	public void setFinishTime(Long finishTime) {
+		this.finishTime = finishTime - getStartTime();
+		setDisplayFinishTime();
 	}
 	
 	public Integer getResult() {
@@ -135,6 +137,16 @@ public class Competitor implements Serializable {
 	
 	public String getDisplayMiddleTime() {
 		return displayMiddleTime;
+	}
+	
+	public void setDisplayFinishTime() {
+		long finishTimeMillis = getFinishTime();
+		SimpleDateFormat sdf = new SimpleDateFormat("mm:ss:SS");
+		this.displayFinishTime = sdf.format(finishTimeMillis);
+	}
+	
+	public String getDisplayFinishTime() {
+		return displayFinishTime;
 	}
 	
 	public boolean getIsStarted() {
