@@ -28,7 +28,7 @@ public class Timer {
 	 */
 	public Timer(Text time) {
 		this.time = time;
-		timeFormat = new SimpleDateFormat("mm:ss:SSS");
+		timeFormat = new SimpleDateFormat("mm:ss.S");
 
 		this.timeline = new Timeline();
 		this.timeline.setCycleCount(Animation.INDEFINITE);
@@ -46,9 +46,9 @@ public class Timer {
 			this.currentTime = System.currentTimeMillis() - endTime;
 
 			if (currentTime < 0) {
-				time.setText(timeFormat.format(0));
+				time.setText(getFormatedTime());//timeFormat.format(0L));
 			} else {
-				time.setText(timeFormat.format(currentTime));
+				time.setText(getFormatedTime());//timeFormat.format(currentTime));
 			}
 		}));
 		}
@@ -60,7 +60,7 @@ public class Timer {
 	 */
 	public void stop() {
 		timeline.stop();
-		time.setText(timeFormat.format(0));
+		time.setText(timeFormat.format(0L));
 		this.currentTime = 0L;
 		this.endTime = 0L;
 	}
@@ -73,4 +73,20 @@ public class Timer {
 	public long getTime() {
 		return currentTime;
 	}
+	
+	/**
+	 * Format time in format h:mm:ss.S if hours exists else mm:ss.S
+
+	 * @return {@link String} formated time string.
+	 */
+	public String getFormatedTime() {
+		long hour = (long) ((currentTime / 3600000) % 24);
+		long minutes = (long) (currentTime / 60000) % 60;
+		long seconds = (long) currentTime / 1000 % 60;
+		long millisec = (long) currentTime % 1000/100;
+		String s1 = String.format("%d:%02d:%02d.%d",hour, minutes, seconds, millisec);
+		String s = s1.replaceFirst ("^00:|^0:|^0", "");
+		return s;
+	}
+	
 }

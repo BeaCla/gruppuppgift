@@ -24,8 +24,8 @@ public class Main extends Application {
 			primaryStage.setMinWidth(810);        
 			primaryStage.setMinHeight(535);
 			
-			scene.getStylesheets().add(getClass().getResource("resources/application.css").toExternalForm());
-			primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("resources/cross-country-skiing.png")));
+			scene.getStylesheets().add(getClass().getResource("./resources/application.css").toExternalForm());
+			primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("./resources/cross-country-skiing.png")));
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {

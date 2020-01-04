@@ -32,6 +32,15 @@
 }
 
 .clock {
-		 -fx-font-size: 46px;
+		-fx-font-size: 46px;
+		-fx-border-style: solid ;
+		-fx-border-width: 2px;
+		-fx-background-color: yellow;
+		-fx-border-color: blue 
+}
+
+.clockframe {
+		-fx-max-width: 220.0;
+		-fx-min-width: 220.0;
 }
 

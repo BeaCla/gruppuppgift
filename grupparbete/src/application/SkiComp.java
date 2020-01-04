@@ -38,6 +38,8 @@ public class SkiComp extends AnchorPane {
 	static final String FILE_NAME = "src\\application\\resources\\file.xml";
 	private SkiTableView tableView = null;
 	List<Competitor> competitorsList = null;
+	List<Competitor> finishedSkiiersList = new ArrayList();
+	List<Competitor> sortedFinishedSkiiersList = new ArrayList();
 
 	Timer timer;
 
@@ -59,9 +61,8 @@ public class SkiComp extends AnchorPane {
 		HBox hBoxClock = new HBox();
 		hBoxClock.setAlignment(Pos.CENTER);
 		hBoxClock.setPadding(new Insets(0, 0, 0, 10));
-		hBoxClock.getStyleClass().add("clockframe");
 
-		Text clockText = new Text("00:00.0");
+		Text clockText = new Text("00:00:00");
 
 		timer = new Timer(clockText);
 
@@ -69,29 +70,19 @@ public class SkiComp extends AnchorPane {
 		hBoxClock.getChildren().addAll(clockText);
 
 		// * End of clock stuff
-		
-		/**
-		 * Buttons for competitions
-		 */
+
 		Button massStart = new Button("Mass start");
 		Button indi = new Button("Interval Start");
 		Button hunt = new Button("Pursuit");
-		
-		/**
-		 * RadioButtons for choosing intervals
-		 */
+
 		RadioButton femton = new RadioButton("15 sec");
 		RadioButton trettio = new RadioButton("30 sec");
 		Text intervalText = new Text("Choose interval:");
 
 		ToggleGroup radioGroup = new ToggleGroup();
 
-        femton.setToggleGroup(radioGroup);
-        trettio.setToggleGroup(radioGroup);
-        
-        /**
-         * Design for competitionsbuttons and intervalbuttons. 
-         */
+		femton.setToggleGroup(radioGroup);
+		trettio.setToggleGroup(radioGroup);
 
 		Region left = new Region();
 		HBox.setHgrow(left, Priority.ALWAYS);
@@ -114,16 +105,14 @@ public class SkiComp extends AnchorPane {
 		intervalcom.setPadding(new Insets(0, 30, 0, 0));
 		intervalcom.setSpacing(20.0);
 
+
+		/////////////////////////////////////
 		competitorsList = new ArrayList<Competitor>();
 		ObservableList<Competitor> observableList = FXCollections.observableArrayList();
 		tableView = new SkiTableView(observableList);
 
 		Competitor[] c = XmlFileUtils.readXMLDecoder(FILE_NAME);
 		tableView.getItems().addAll(Arrays.asList(c));
-		
-		/**
-		 * ActionEvents for clockbuttons. 
-		 */
 
 		Button stopButton = new Button("Stop/Reset");
 		stopButton.setOnAction(e-> {
@@ -172,14 +161,12 @@ public class SkiComp extends AnchorPane {
 						observableList.addAll(competitorsList);
 					}
 					
+
 				}
-			
+
 			}	
 		});
 
-		/**
-		 * Design for clock and second pane. 
-		 */
 		VBox clockButtons = new VBox();
 		clockButtons.getStyleClass().add("clockbutton");
 		clockButtons.setSpacing(10.0);
@@ -188,7 +175,10 @@ public class SkiComp extends AnchorPane {
 		Clockline.getChildren().addAll(hBoxClock, clockButtons, left, intervalcom);
 
 		/**
-		 * ActionEvent for masstart button. 
+		 * Actionevent för masstart Tar den inmatade tiden "t.ex. 10:00:30" och
+		 * konverterar den till millisekunder. Millisekunderna sparas i varje accounts
+		 * "startTime". setDisplayStartTime() hämtar i sin tur informationen från
+		 * startTime och visar den i rätt format i tableViewn.
 		 */
 		massStart.setOnAction(e -> {
 
@@ -230,9 +220,12 @@ public class SkiComp extends AnchorPane {
 			}
 			observableList.clear();
 			observableList.addAll(competitorsList);
-			
+
 		});
-	
+
+
+
+		///////////////////////////////////////
 		vbox.getChildren().addAll(new AddCompetitorframe(tableView), Clockline, tableView);
 		getChildren().addAll(vbox);
 	}
@@ -247,9 +240,6 @@ public class SkiComp extends AnchorPane {
 		return obl;
 	}
 
-	/**
-	 * Method for setting the result in tableview when hitting finish-button for a a competitor.
-	 */
 	public void setResult(Competitor competitor) {
 		Collections.sort(competitorsList, competitor.getCompResult());
 		
