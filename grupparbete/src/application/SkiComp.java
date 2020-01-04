@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -58,8 +59,9 @@ public class SkiComp extends AnchorPane {
 		HBox hBoxClock = new HBox();
 		hBoxClock.setAlignment(Pos.CENTER);
 		hBoxClock.setPadding(new Insets(0, 0, 0, 10));
+		hBoxClock.getStyleClass().add("clockframe");
 
-		Text clockText = new Text("00:00:00");
+		Text clockText = new Text("00:00.0");
 
 		timer = new Timer(clockText);
 
@@ -71,7 +73,6 @@ public class SkiComp extends AnchorPane {
 		/**
 		 * Buttons for competitions
 		 */
-
 		Button massStart = new Button("Mass start");
 		Button indi = new Button("Interval Start");
 		Button hunt = new Button("Pursuit");
@@ -79,7 +80,6 @@ public class SkiComp extends AnchorPane {
 		/**
 		 * RadioButtons for choosing intervals
 		 */
-		
 		RadioButton femton = new RadioButton("15 sec");
 		RadioButton trettio = new RadioButton("30 sec");
 		Text intervalText = new Text("Choose interval:");
@@ -233,9 +233,6 @@ public class SkiComp extends AnchorPane {
 			
 		});
 	
-
-
-		///////////////////////////////////////
 		vbox.getChildren().addAll(new AddCompetitorframe(tableView), Clockline, tableView);
 		getChildren().addAll(vbox);
 	}
