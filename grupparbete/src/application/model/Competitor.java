@@ -2,6 +2,7 @@ package application.model;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -21,7 +22,7 @@ public class Competitor implements Serializable {
 	private Long middleTime = 0L;
 	private Long finishTime = 0L;
 	private String displayFinishTime = "0";
-	private Integer result = 0;
+	private String result = "-";
 	private boolean isStarted = false;
 	
 	public Competitor() {
@@ -37,7 +38,7 @@ public class Competitor implements Serializable {
 	}
 	
 	public Competitor (String firstName, String lastName, Integer number, String club, String displayStartTime,
-			String displayMiddleTime, String displayFinishTime, int result) {
+			String displayMiddleTime, String displayFinishTime, String result) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.number = number;
@@ -98,8 +99,6 @@ public class Competitor implements Serializable {
 	public void setMiddleTime(Long middleTime) {
 		this.middleTime = middleTime - getStartTime();
 		setDisplayMiddleTime();
-//		this.displayMiddleTime = middleTime.toString();
-//		setDisplayMiddleTime();
 	}
 	
 	public Long getFinishTime() {
@@ -111,11 +110,11 @@ public class Competitor implements Serializable {
 		setDisplayFinishTime();
 	}
 	
-	public Integer getResult() {
+	public String getResult() {
 		return result;
 	}
 	
-	public void setResult(Integer result) {
+	public void setResult(String result) {
 		this.result = result;
 	}
 	
@@ -155,6 +154,19 @@ public class Competitor implements Serializable {
 	
 	public void setIsStarted(boolean isStarted) {
 		this.isStarted = isStarted;
+	}
+	
+	public Comparator<Competitor> getCompResult(){
+		Comparator<Competitor> comp = new Comparator<Competitor>() {
+
+			@Override
+			public int compare(Competitor o1, Competitor o2) {
+				
+			return o1.finishTime.compareTo(o2.finishTime);
+			}
+			
+		};
+		return comp;
 	}
 }
 
