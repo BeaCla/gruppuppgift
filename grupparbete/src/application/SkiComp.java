@@ -30,7 +30,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 
 /**
- * Class for creating a ski competition app.
+ * Class får creating a ski completion app.
  * @author nilin
  */
 public class SkiComp extends AnchorPane {
@@ -107,13 +107,12 @@ public class SkiComp extends AnchorPane {
 		comButton.setPadding(new Insets(0, 30, 0, 0));
 		comButton.getChildren().addAll(massStart, indi, hunt);
 		comButton.setAlignment(Pos.CENTER);
-		
+
 		VBox intervalcom = new VBox();
 		intervalcom.getChildren().addAll(comButton, intervalBox);
 		intervalcom.setAlignment(Pos.CENTER);
 		intervalcom.setPadding(new Insets(0, 30, 0, 0));
 		intervalcom.setSpacing(20.0);
-		
 
 		competitorsList = new ArrayList<Competitor>();
 		ObservableList<Competitor> observableList = FXCollections.observableArrayList();
