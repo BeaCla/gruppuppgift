@@ -156,6 +156,7 @@ public class Competitor implements Serializable {
 		this.isStarted = isStarted;
 	}
 	
+	
 	/**
 	 * Format time in format h:mm:ss.S if hours exists else mm:ss.S
 
@@ -171,6 +172,7 @@ public class Competitor implements Serializable {
 		return s;
 	}
 	
+
 	public Comparator<Competitor> getCompResult(){
 		Comparator<Competitor> comp = new Comparator<Competitor>() {
 
