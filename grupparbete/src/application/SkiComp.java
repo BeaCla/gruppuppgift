@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +39,8 @@ public class SkiComp extends AnchorPane {
 	static final String FILE_NAME = "src\\application\\resources\\file.xml";
 	private SkiTableView tableView = null;
 	List<Competitor> competitorsList = null;
+//	List<Competitor> finishedSkiiersList = new ArrayList();
+//	List<Competitor> sortedFinishedSkiiersList = new ArrayList();
 
 	Timer timer;
 
@@ -57,7 +60,7 @@ public class SkiComp extends AnchorPane {
 		HBox Clockline = new HBox();
 
 		HBox hBoxClock = new HBox();
-		hBoxClock.setAlignment(Pos.CENTER);
+		hBoxClock.setAlignment(Pos.CENTER_LEFT);
 		hBoxClock.setPadding(new Insets(0, 0, 0, 10));
 		hBoxClock.getStyleClass().add("clockframe");
 
@@ -148,7 +151,8 @@ public class SkiComp extends AnchorPane {
 					competitorsList.addAll(observableList);
 					int selectionIndex = tableView.getSelectionModel().getSelectedIndex();
 					if(competitorsList.get(selectionIndex).getStartTime() < timer.getTime()) {
-						competitorsList.get(selectionIndex).setMiddleTime(timer.getTime());
+						Long startTime = competitorsList.get(selectionIndex).getStartTime();
+						competitorsList.get(selectionIndex).setMiddleTime(startTime - timer.getTime());
 						observableList.clear();
 						observableList.addAll(competitorsList);
 					}
@@ -167,7 +171,9 @@ public class SkiComp extends AnchorPane {
 					competitorsList.addAll(observableList);
 					int selectionIndex = tableView.getSelectionModel().getSelectedIndex();
 					if(competitorsList.get(selectionIndex).getMiddleTime() < timer.getTime() && competitorsList.get(selectionIndex).getMiddleTime() > 0) {
-						competitorsList.get(selectionIndex).setFinishTime(timer.getTime());
+						Long startTime = competitorsList.get(selectionIndex).getStartTime();
+						competitorsList.get(selectionIndex).setFinishTime(startTime - timer.getTime());
+						setResult(competitorsList.get(selectionIndex));
 						observableList.clear();
 						observableList.addAll(competitorsList);
 					}
@@ -232,6 +238,10 @@ public class SkiComp extends AnchorPane {
 			observableList.addAll(competitorsList);
 			
 		});
+		
+		hunt.setOnAction(e-> {
+			makePursuitStartList(getCompetitorList());
+		});
 	
 		vbox.getChildren().addAll(new AddCompetitorframe(tableView), Clockline, tableView);
 		getChildren().addAll(vbox);
@@ -245,5 +255,48 @@ public class SkiComp extends AnchorPane {
 	public ObservableList<Competitor> getCompetitorList() {
 		ObservableList<Competitor> obl = tableView.getItems();
 		return obl;
+	}
+	
+	/**
+	 * Creates a Pursuit start list based on placing (result).
+	 * @param finshed {@link ObservableList} <{@link Competitor}> new start list.
+	 * @return
+	 */
+	public ObservableList<Competitor> makePursuitStartList(ObservableList<Competitor> finshed) {
+		
+		ObservableList<Competitor> newStartlist = FXCollections.observableArrayList();
+		Comparator<Competitor> competitorComparator = Comparator.comparing(Competitor::getResult);
+		finshed.sort(competitorComparator);
+		
+		if (finshed != null) {
+			Long winnerTime = (finshed.get(0)).getFinishTime();
+			for (int i = 0; i <  finshed.size(); i++) {
+				Competitor updateCompetitor  = finshed.get(i);
+				long newStartTime = updateCompetitor.getFinishTime() - winnerTime;
+				updateCompetitor.setStartTime(newStartTime);
+				updateCompetitor.setNumber(i+1);
+				updateCompetitor.setFinishTime(0L);
+				updateCompetitor.setMiddleTime(0L);
+				updateCompetitor.setResult("-");
+				
+				newStartlist.add(i, updateCompetitor);
+			}
+			finshed.clear();
+			finshed.addAll(newStartlist);
+		}
+		return newStartlist;
+	}
+
+	public void setResult(Competitor competitor) {
+		Collections.sort(competitorsList, competitor.getCompResult());
+		
+		int counter = 1;
+		for (Competitor competitor2 : competitorsList) {
+			if(competitor2.getFinishTime() > 0) {
+				competitor2.setResult(Integer.toString(counter));
+				counter++;
+			}
+		}
+		
 	}
 }

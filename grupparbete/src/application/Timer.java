@@ -15,8 +15,8 @@ import javafx.scene.text.Text;
  * @author nilin
  */
 public class Timer {
-	long currentTime = 0;
-	long endTime = 0;
+	long currentTime = 0L;
+	long endTime = 0L;
 	Timeline timeline;
 	Text time;
 	DateFormat timeFormat = null;
@@ -28,10 +28,15 @@ public class Timer {
 	 */
 	public Timer(Text time) {
 		this.time = time;
-		timeFormat = new SimpleDateFormat("mm:ss.S");
+		timeFormat = new SimpleDateFormat("mm:ss.SSS");
 
 		this.timeline = new Timeline();
 		this.timeline.setCycleCount(Animation.INDEFINITE);
+		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1), event -> {
+			this.currentTime = System.currentTimeMillis() - endTime;
+			//time.setText(getFormatedTime());
+			time.setText(timeFormat.format(currentTime));// + "." + currentTime % 1000/100);	
+		}));
 	}
 
 	/**
@@ -39,19 +44,6 @@ public class Timer {
 	 */
 	public void start() {
 		endTime = System.currentTimeMillis() - currentTime;
-		if (timeline.getStatus() != null) {
-			timeline.getKeyFrames().clear();
-			
-			timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1), event -> {
-			this.currentTime = System.currentTimeMillis() - endTime;
-
-			if (currentTime < 0) {
-				time.setText(getFormatedTime());//timeFormat.format(0L));
-			} else {
-				time.setText(getFormatedTime());//timeFormat.format(currentTime));
-			}
-		}));
-		}
 		timeline.playFromStart();
 	}
 
@@ -75,17 +67,21 @@ public class Timer {
 	}
 	
 	/**
-	 * Format time in format h:mm:ss.S if hours exists else mm:ss.S
+	 * Format time in format mm:ss.S
 
 	 * @return {@link String} formated time string.
 	 */
 	public String getFormatedTime() {
-		long hour = (long) ((currentTime / 3600000) % 24);
+		
 		long minutes = (long) (currentTime / 60000) % 60;
 		long seconds = (long) currentTime / 1000 % 60;
 		long millisec = (long) currentTime % 1000/100;
-		String s1 = String.format("%d:%02d:%02d.%d",hour, minutes, seconds, millisec);
-		String s = s1.replaceFirst ("^00:|^0:|^0", "");
+		String s = String.format("%02d:%02d.%d", minutes, seconds, millisec);
+		
+		// if hour should be used
+//		long hour = (long) ((currentTime / 3600000) % 24);
+//		String s1 = String.format("%d:%02d:%02d.%d",hour, minutes, seconds, millisec);
+//		String s = s1.replaceFirst ("^00:|^0:|^0", "");
 		return s;
 	}
 	
