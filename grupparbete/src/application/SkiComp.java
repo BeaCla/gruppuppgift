@@ -146,7 +146,7 @@ public class SkiComp extends AnchorPane {
 					int selectionIndex = tableView.getSelectionModel().getSelectedIndex();
 					if(competitorsList.get(selectionIndex).getStartTime() < timer.getTime()) {
 						Long startTime = competitorsList.get(selectionIndex).getStartTime();
-						competitorsList.get(selectionIndex).setMiddleTime(startTime - timer.getTime());
+						competitorsList.get(selectionIndex).setMiddleTime(timer.getTime() - startTime);
 						observableList.clear();
 						observableList.addAll(competitorsList);
 					}
@@ -166,7 +166,7 @@ public class SkiComp extends AnchorPane {
 					int selectionIndex = tableView.getSelectionModel().getSelectedIndex();
 					if(competitorsList.get(selectionIndex).getMiddleTime() < timer.getTime() && competitorsList.get(selectionIndex).getMiddleTime() > 0) {
 						Long startTime = competitorsList.get(selectionIndex).getStartTime();
-						competitorsList.get(selectionIndex).setFinishTime(startTime - timer.getTime());
+						competitorsList.get(selectionIndex).setFinishTime(timer.getTime() - startTime);
 						setResult(competitorsList.get(selectionIndex));
 						observableList.clear();
 						observableList.addAll(competitorsList);
