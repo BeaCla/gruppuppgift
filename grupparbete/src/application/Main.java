@@ -6,6 +6,11 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 
+/**
+ * Class main for SkiComp.
+ * @author Niclas Lindblom, André Larsson Pähn, Beatrice Claesson, Zara Lundgren Pettersson
+ *
+ */
 public class Main extends Application {
 	
 	static final String FILE_NAME = "src\\application\\resources\\file.xml";
