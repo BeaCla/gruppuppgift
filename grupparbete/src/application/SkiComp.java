@@ -1,10 +1,9 @@
 package application;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import application.model.Competitor;
@@ -22,14 +21,11 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Popup;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 
 /**
- * Class får creating a ski completion app.
+ * Class for creating a ski competition app.
  * @author nilin
  */
 public class SkiComp extends AnchorPane {
@@ -37,6 +33,8 @@ public class SkiComp extends AnchorPane {
 	static final String FILE_NAME = "src\\application\\resources\\file.xml";
 	private SkiTableView tableView = null;
 	List<Competitor> competitorsList = null;
+//	List<Competitor> finishedSkiiersList = new ArrayList();
+//	List<Competitor> sortedFinishedSkiiersList = new ArrayList();
 
 	Timer timer;
 
@@ -56,10 +54,11 @@ public class SkiComp extends AnchorPane {
 		HBox Clockline = new HBox();
 
 		HBox hBoxClock = new HBox();
-		hBoxClock.setAlignment(Pos.CENTER);
+		hBoxClock.setAlignment(Pos.CENTER_LEFT);
 		hBoxClock.setPadding(new Insets(0, 0, 0, 10));
+		hBoxClock.getStyleClass().add("clockframe");
 
-		Text clockText = new Text("00:00:00");
+		Text clockText = new Text("00:00.0");
 
 		timer = new Timer(clockText);
 
@@ -67,11 +66,17 @@ public class SkiComp extends AnchorPane {
 		hBoxClock.getChildren().addAll(clockText);
 
 		// * End of clock stuff
-
+		
+		/**
+		 * Buttons for competitions
+		 */
 		Button massStart = new Button("Mass start");
 		Button indi = new Button("Interval Start");
 		Button hunt = new Button("Pursuit");
 		
+		/**
+		 * RadioButtons for choosing intervals
+		 */
 		RadioButton femton = new RadioButton("15 sec");
 		RadioButton trettio = new RadioButton("30 sec");
 		Text intervalText = new Text("Choose interval:");
@@ -80,6 +85,10 @@ public class SkiComp extends AnchorPane {
 
         femton.setToggleGroup(radioGroup);
         trettio.setToggleGroup(radioGroup);
+        
+        /**
+         * Design for competitionsbuttons and intervalbuttons. 
+         */
 
 		Region left = new Region();
 		HBox.setHgrow(left, Priority.ALWAYS);
@@ -103,13 +112,16 @@ public class SkiComp extends AnchorPane {
 		intervalcom.setSpacing(20.0);
 		
 
-		/////////////////////////////////////
 		competitorsList = new ArrayList<Competitor>();
 		ObservableList<Competitor> observableList = FXCollections.observableArrayList();
 		tableView = new SkiTableView(observableList);
 
 		Competitor[] c = XmlFileUtils.readXMLDecoder(FILE_NAME);
 		tableView.getItems().addAll(Arrays.asList(c));
+		
+		/**
+		 * ActionEvents for clockbuttons. 
+		 */
 
 		Button stopButton = new Button("Stop/Reset");
 		stopButton.setOnAction(e-> {
@@ -133,7 +145,8 @@ public class SkiComp extends AnchorPane {
 					competitorsList.addAll(observableList);
 					int selectionIndex = tableView.getSelectionModel().getSelectedIndex();
 					if(competitorsList.get(selectionIndex).getStartTime() < timer.getTime()) {
-						competitorsList.get(selectionIndex).setMiddleTime(timer.getTime());
+						Long startTime = competitorsList.get(selectionIndex).getStartTime();
+						competitorsList.get(selectionIndex).setMiddleTime(timer.getTime() - startTime);
 						observableList.clear();
 						observableList.addAll(competitorsList);
 					}
@@ -152,7 +165,9 @@ public class SkiComp extends AnchorPane {
 					competitorsList.addAll(observableList);
 					int selectionIndex = tableView.getSelectionModel().getSelectedIndex();
 					if(competitorsList.get(selectionIndex).getMiddleTime() < timer.getTime() && competitorsList.get(selectionIndex).getMiddleTime() > 0) {
-						competitorsList.get(selectionIndex).setFinishTime(timer.getTime());
+						Long startTime = competitorsList.get(selectionIndex).getStartTime();
+						competitorsList.get(selectionIndex).setFinishTime(timer.getTime() - startTime);
+						setResult(competitorsList.get(selectionIndex));
 						observableList.clear();
 						observableList.addAll(competitorsList);
 					}
@@ -162,6 +177,9 @@ public class SkiComp extends AnchorPane {
 			}	
 		});
 
+		/**
+		 * Design for clock and second pane. 
+		 */
 		VBox clockButtons = new VBox();
 		clockButtons.getStyleClass().add("clockbutton");
 		clockButtons.setSpacing(10.0);
@@ -170,10 +188,7 @@ public class SkiComp extends AnchorPane {
 		Clockline.getChildren().addAll(hBoxClock, clockButtons, left, intervalcom);
 
 		/**
-		 * Actionevent för masstart Tar den inmatade tiden "t.ex. 10:00:30" och
-		 * konverterar den till millisekunder. Millisekunderna sparas i varje accounts
-		 * "startTime". setDisplayStartTime() hämtar i sin tur informationen från
-		 * startTime och visar den i rätt format i tableViewn.
+		 * ActionEvent for masstart button. 
 		 */
 		massStart.setOnAction(e -> {
 			
@@ -217,10 +232,11 @@ public class SkiComp extends AnchorPane {
 			observableList.addAll(competitorsList);
 			
 		});
+		
+		hunt.setOnAction(e-> {
+			makePursuitStartList(getCompetitorList());
+		});
 	
-
-
-		///////////////////////////////////////
 		vbox.getChildren().addAll(new AddCompetitorframe(tableView), Clockline, tableView);
 		getChildren().addAll(vbox);
 	}
@@ -234,7 +250,48 @@ public class SkiComp extends AnchorPane {
 		ObservableList<Competitor> obl = tableView.getItems();
 		return obl;
 	}
-	
 
+	/**
+	 * Creates a Pursuit start list based on placing (result).
+	 * @param finshed {@link ObservableList} <{@link Competitor}> new start list.
+	 * @return
+	 */
+	public ObservableList<Competitor> makePursuitStartList(ObservableList<Competitor> finshed) {
+		
+		ObservableList<Competitor> newStartlist = FXCollections.observableArrayList();
+		Comparator<Competitor> competitorComparator = Comparator.comparing(Competitor::getResult);
+		finshed.sort(competitorComparator);
+		
+		if (finshed != null) {
+			Long winnerTime = (finshed.get(0)).getFinishTime();
+			for (int i = 0; i <  finshed.size(); i++) {
+				Competitor updateCompetitor  = finshed.get(i);
+				long newStartTime = updateCompetitor.getFinishTime() - winnerTime;
+				updateCompetitor.setStartTime(newStartTime);
+				updateCompetitor.setNumber(i+1);
+				updateCompetitor.setFinishTime(0L);
+				updateCompetitor.setMiddleTime(0L);
+				updateCompetitor.setResult("-");
+				
+				newStartlist.add(i, updateCompetitor);
+			}
+			finshed.clear();
+			finshed.addAll(newStartlist);
+		}
+		return newStartlist;
+	}
 
+	public void setResult(Competitor competitor) {
+		Collections.sort(competitorsList, competitor.getCompResult());
+		
+		int counter = 1;
+		for (Competitor competitor2 : competitorsList) {
+			if(competitor2.getFinishTime() > 0) {
+				competitor2.setResult(Integer.toString(counter));
+				counter++;
+			}
+		}
+		
+	}
 }
+

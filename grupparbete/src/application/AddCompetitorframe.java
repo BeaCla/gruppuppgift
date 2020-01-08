@@ -39,7 +39,7 @@ public class AddCompetitorframe extends HBox {
 	
 	/**
 	 * Constuctor. 
-	 * @param {@link skiTableView} 
+	 * @param skiTableView {@link skiTableView} 
 	 */
 	public AddCompetitorframe(SkiTableView skiTableView) {
 		super(new HBox());
@@ -80,8 +80,7 @@ public class AddCompetitorframe extends HBox {
 
 	/**
 	 * Method for setting up buttons and actions.
-	 * @param skiTableView
-	 * @return
+	 * @return HBox
 	 */
 	public HBox setupButtons() {
 		HBox buttonLine = new HBox();

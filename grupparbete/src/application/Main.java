@@ -6,6 +6,11 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 
+/**
+ * Class main for SkiComp.
+ * @author Niclas Lindblom, André Larsson Pähn, Beatrice Claesson, Zara Lundgren Pettersson
+ *
+ */
 public class Main extends Application {
 	
 	static final String FILE_NAME = "src\\application\\resources\\file.xml";
@@ -24,8 +29,8 @@ public class Main extends Application {
 			primaryStage.setMinWidth(810);        
 			primaryStage.setMinHeight(535);
 			
-			scene.getStylesheets().add(getClass().getResource("resources/application.css").toExternalForm());
-			primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("resources/cross-country-skiing.png")));
+			scene.getStylesheets().add(getClass().getResource("./resources/application.css").toExternalForm());
+			primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("./resources/cross-country-skiing.png")));
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {
